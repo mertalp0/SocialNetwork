@@ -8,8 +8,9 @@
 import UIKit
 
 extension UIColor {
-    static let primaryColor = UIColor(red: 0.2, green: 0.6, blue: 0.86, alpha: 1.0)
-    static let secondaryColor = UIColor(red: 0.9, green: 0.3, blue: 0.2, alpha: 1.0)
-    static let backgroundColor = UIColor.systemBackground
-    static let textColor = UIColor.label
+    static let primaryColor = UIColor(hex: "#51d266")
+    static let secondaryColor = UIColor.red
+    static let backgroundColor = UIColor.white
+    static let textColor = UIColor.black
+    static let transparentGray = UIColor.lightGray.withAlphaComponent(0.2)
 }

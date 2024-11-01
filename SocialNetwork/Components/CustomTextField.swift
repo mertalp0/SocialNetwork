@@ -23,7 +23,7 @@ class CustomTextField: UITextField {
 
     private func setupTextField() {
         self.borderStyle = .none
-        self.font = UIFont.systemFont(ofSize: 16)
+        self.font = UIFont.dynamicFont(size: 14)
         self.textColor = .black
         
         let bottomBorder = UIView()

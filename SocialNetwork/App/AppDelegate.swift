@@ -6,21 +6,34 @@
 //
 
 import UIKit
-import SnapKit
+import NeonSDK
+import Firebase
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window : UIWindow?
+    
+    var window: UIWindow?
+ ///   var appCoordinator : AppCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            
-        let vc = LoginVC()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = vc
-        window?.makeKeyAndVisible()
         
+        Neon.isUserPremium = true
+        Neon.configure(
+            window: &window,
+            onboardingVC: OnboardingViewController(),
+            paywallVC: PaywallVC(viewModel: PaywallViewModel()),
+            homeVC: LoginVC(viewModel: LoginViewModel())
+        )
+        
+//        Neon.configure(
+//            window: &window,
+//            onboardingVC: OnboaringFirstVC(viewModel: OnboaringFirstViewModel()),
+//            paywallVC: PaywallVC(viewModel: PaywallViewModel()),
+//            homeVC: LoginVC(viewModel: LoginViewModel())
+//        )
+        FirebaseApp.configure()
         return true
     }
 }
-

@@ -1,5 +1,5 @@
 {
-  "originHash" : "5d7912e277139505d1304d2d37b62b118680db13a9608591b4abd9effaebf057",
+  "originHash" : "8e7439f916b7fb211d934b0fb952e086855e586b883b0c378355aa8741dd19bb",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -17,15 +17,6 @@
       "state" : {
         "revision" : "6795a340a0dcdf1ac39d10e26be052f365ec9396",
         "version" : "3.0.0-beta.2"
-      }
-    },
-    {
-      "identity" : "alamofire",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/Alamofire.git",
-      "state" : {
-        "revision" : "e16d3481f5ed35f0472cb93350085853d754913f",
-        "version" : "5.10.1"
       }
     },
     {
@@ -107,15 +98,6 @@
       "state" : {
         "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
         "version" : "100.0.0"
-      }
-    },
-    {
-      "identity" : "kingfisher",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/onevcat/Kingfisher.git",
-      "state" : {
-        "revision" : "c0940e241945e6378c01fbd45fd3815579d47ef5",
-        "version" : "8.1.0"
       }
     },
     {

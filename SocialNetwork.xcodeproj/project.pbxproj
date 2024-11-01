@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		94895E332CD270200069B164 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 94895E322CD270200069B164 /* Alamofire */; };
 		94BCF6352CD2B1AB009CB96E /* NeonSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 94BCF6342CD2B1AB009CB96E /* NeonSDK */; };
-		94BCF6382CD2B1D4009CB96E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 94BCF6372CD2B1D4009CB96E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,8 +40,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94BCF6382CD2B1D4009CB96E /* Kingfisher in Frameworks */,
-				94895E332CD270200069B164 /* Alamofire in Frameworks */,
 				94BCF6352CD2B1AB009CB96E /* NeonSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,9 +83,7 @@
 			);
 			name = SocialNetwork;
 			packageProductDependencies = (
-				94895E322CD270200069B164 /* Alamofire */,
 				94BCF6342CD2B1AB009CB96E /* NeonSDK */,
-				94BCF6372CD2B1D4009CB96E /* Kingfisher */,
 			);
 			productName = SocialNetwork;
 			productReference = 94E1379D2CD26D0900C25C76 /* SocialNetwork.app */;
@@ -120,9 +114,7 @@
 			mainGroup = 94E137942CD26D0800C25C76;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				94895E312CD270200069B164 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */,
-				94BCF6362CD2B1D4009CB96E /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94E1379E2CD26D0900C25C76 /* Products */;
@@ -352,14 +344,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		94895E312CD270200069B164 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.10.1;
-			};
-		};
 		94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/neon-apps/neon-sdk.git";
@@ -368,31 +352,13 @@
 				kind = branch;
 			};
 		};
-		94BCF6362CD2B1D4009CB96E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.1.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		94895E322CD270200069B164 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 94895E312CD270200069B164 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		94BCF6342CD2B1AB009CB96E /* NeonSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */;
 			productName = NeonSDK;
-		};
-		94BCF6372CD2B1D4009CB96E /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 94BCF6362CD2B1D4009CB96E /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
