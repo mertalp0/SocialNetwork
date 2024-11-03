@@ -84,6 +84,7 @@ final class PostCreateViewModel: BaseViewModel {
         userService.updateUserPosts(userId: user.id, posts: user.posts) { [weak self] result in
             switch result {
             case .success:
+                
                 UserManager.shared.appendPostToCurrentUser(postId)
                 self?.triggerAlert(title: "Success", message: "Post created success")
             case .failure(let error):

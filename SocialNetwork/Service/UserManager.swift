@@ -31,6 +31,7 @@ final class UserManager {
         guard var user = currentUser else { return }
         user.posts.append(postId)
         currentUser = user
+        
     }
 }
 

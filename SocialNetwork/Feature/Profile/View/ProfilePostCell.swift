@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 import NeonSDK
+import Kingfisher
 
-final class ProfilePostCell: NeonTableViewCell<PostModel> {
+final class ProfilePostCell: NeonTableViewCell<Post> {
     
     private let profileImageView = UIImageView()
     private let nameLabel = UILabel()
@@ -33,7 +34,7 @@ final class ProfilePostCell: NeonTableViewCell<PostModel> {
     }
     
     private func setupSubviews() {
-        // Profil Resmi (Sol Sütun)
+        // Profil Resmi
         profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
@@ -45,10 +46,10 @@ final class ProfilePostCell: NeonTableViewCell<PostModel> {
         contentStackView.alignment = .leading
         contentView.addSubview(contentStackView)
         
-        // Kullanıcı Adı (Name)
+        // Kullanıcı Adı
         nameLabel.font = .boldSystemFont(ofSize: 16)
         
-        // Kullanıcı İsmi (Username)
+        // Kullanıcı İsmi (Nickname)
         usernameLabel.font = .systemFont(ofSize: 14)
         usernameLabel.textColor = .gray
         
@@ -98,27 +99,30 @@ final class ProfilePostCell: NeonTableViewCell<PostModel> {
             make.bottom.equalToSuperview().inset(16)
         }
         
-        // Post Resmi Yüksekliği (Görünürken)
         postImageView.snp.makeConstraints { make in
-            make.height.equalTo(200).priority(.low) // Görünür olduğunda yüksekliği 200 olacak
+            make.height.equalTo(200).priority(.low)
         }
     }
     
-    override func configure(with post: PostModel) {
-        profileImageView.image = UIImage(named: post.profileImageName ?? "Mert")
-        nameLabel.text = post.username // Kullanıcı adı (örneğin, tam isim)
-        usernameLabel.text = post.handle // Kullanıcı ismi (örneğin, @kullaniciAdi)
-        contentLabel.text = post.content
+    override func configure(with post: Post) {
+        if let profileImageUrl = URL(string: post.userImageUrl) {
+            profileImageView.kf.setImage(with: profileImageUrl)
+        } else {
+            profileImageView.image = UIImage(named: "defaultProfile")
+        }
         
-        // Gönderi resmi opsiyonel
-        if let postImageName = post.postImageName {
-            postImageView.image = UIImage(named: postImageName)
+        nameLabel.text = post.username
+        usernameLabel.text = "@\(post.userNickname)"
+        contentLabel.text = post.text
+        
+        if let postImageUrl = post.imageUrl, let url = URL(string: postImageUrl) {
+            postImageView.kf.setImage(with: url)
             postImageView.isHidden = false
         } else {
             postImageView.isHidden = true
         }
         
-        likeCountLabel.text = "\(post.likeCount)"
-        commentCountLabel.text = "\(post.commentCount)"
+        likeCountLabel.text = "\(post.likers.count)"
+        commentCountLabel.text = "\(post.commenters.count)"
     }
 }

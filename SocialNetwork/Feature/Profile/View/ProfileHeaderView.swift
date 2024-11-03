@@ -32,7 +32,6 @@ final class ProfileHeaderView: UIView {
         setupConstraints()
         updateUserData()
         
-        // Bildirimi dinleme
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdate), name: .currentUserDidChange, object: nil)
     }
     
