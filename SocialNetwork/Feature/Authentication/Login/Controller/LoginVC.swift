@@ -157,19 +157,22 @@ extension LoginVC: CustomButtonDelegate {
         viewModel.email = emailTextField.text ?? ""
         viewModel.password = passwordTextField.text ?? ""
         
-        viewModel.login { result in
-            switch result {
-            case .success(_):
-                print("success")
-                
-                let feedViewModel = FeedViewModel()
-                let feedVC = FeedVC(viewModel: feedViewModel)
-                self.present(destinationVC: feedVC , slideDirection: .right)
-                
-            case .failure(let error):
-                print(error)
-            }
-        }
+        
+        let mainTabBarController = MainTabBarController()
+        mainTabBarController.modalPresentationStyle = .fullScreen
+        self.present(mainTabBarController, animated: true)
+        
+//        viewModel.login { result in
+//            switch result {
+//            case .success(_):
+//                print("success")
+//                
+//                burdaya
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }
 
