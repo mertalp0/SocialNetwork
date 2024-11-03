@@ -15,7 +15,7 @@ struct AppUser {
     let password: String
     let aboutMe: String
     let profileImageUrl: String
-    let posts: [String]
+    var posts: [String]
     let followers: [String]
     let following: [String]
     

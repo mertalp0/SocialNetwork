@@ -11,7 +11,6 @@ class BaseVC <TypeViewModel: BaseViewModel> : UIViewController {
     
     var viewModel : TypeViewModel
    
-    
     private var loadingView: UIView?
     
     init(viewModel: TypeViewModel) {

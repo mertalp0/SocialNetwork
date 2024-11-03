@@ -13,28 +13,25 @@ final class SettingsVC: BaseVC<SettingsViewModel> {
     
     private let appBar = SettingsAppBar(title: "Settings")
     private var tableView: NeonTableView<SettingOption, SettingCell>!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupAppBar()
         setupTableView()
     }
-    
+
     private func setupAppBar() {
-        // SettingsAppBar'ı ayarla ve delegasyonu bağlantısını yap
         appBar.delegate = self
         view.addSubview(appBar)
-        
         appBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.left.right.equalToSuperview()
             make.height.equalTo(50)
         }
     }
-    
+
     private func setupTableView() {
-        // Ayar seçeneklerini oluştur
         let options = [
             SettingOption(icon: UIImage(systemName: "square.and.arrow.up"), title: "Share app", titleColor: .black),
             SettingOption(icon: UIImage(systemName: "star"), title: "Rate us", titleColor: .black),
@@ -46,24 +43,41 @@ final class SettingsVC: BaseVC<SettingsViewModel> {
             SettingOption(icon: UIImage(systemName: "rectangle.portrait.and.arrow.right"), title: "Log Out", titleColor: .systemRed)
         ]
         
-        // NeonTableView oluşturun
         tableView = NeonTableView<SettingOption, SettingCell>(objects: options, heightForRows: 50)
-        tableView.didSelect = { [weak self] option, indexPath in
+        tableView.didSelect = { [weak self] option, _ in
             self?.handleOptionSelection(option)
         }
         
         view.addSubview(tableView)
-        
-        // TableView Constraintleri
         tableView.snp.makeConstraints { make in
             make.top.equalTo(appBar.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
     }
-    
+
     private func handleOptionSelection(_ option: SettingOption) {
-        print("Selected option: \(option.title)")
-        // Burada her ayar seçeneğine göre ilgili işlemleri yapabilirsiniz
+        if option.title == "Log Out" {
+            // Logout işlemi
+            viewModel.logout { [weak self] result in
+                switch result {
+                case .success:
+                    self?.navigateToLoginScreen()
+                case .failure(let error):
+                 print(error)
+                }
+            }
+        } else {
+            print("Selected option: \(option.title)")
+        }
+    }
+    
+    private func navigateToLoginScreen() {
+        UserManager.shared.clearUser()
+        let loginViewModel = LoginViewModel()
+        let loginVC = LoginVC(viewModel: loginViewModel)
+        present(destinationVC: loginVC, slideDirection: .right)
+        // Login ekranına yönlendirme işlemi
+      
     }
 }
 

@@ -41,7 +41,7 @@ final class PostCreateVC: BaseVC<PostCreateViewModel> {
         
         // Profil Resmi
         profileImageView.image = UIImage(named: "Mert")
-        profileImageView.layer.cornerRadius = 20
+        profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
         view.addSubview(profileImageView)
@@ -123,6 +123,11 @@ extension PostCreateVC : CustomAppBarDelegate {
 extension PostCreateVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
         print("on tap share button")
+        
+        viewModel.text = self.textView.text
+        viewModel.image = UIImage(named: "Mert")
+        
+        viewModel.createPost()
     }
     
    

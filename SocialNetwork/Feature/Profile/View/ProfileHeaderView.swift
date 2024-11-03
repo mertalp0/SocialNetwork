@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class ProfileHeaderView: UIView {
     
@@ -21,41 +22,69 @@ final class ProfileHeaderView: UIView {
     private let statsStackView = UIStackView()
     private let separatorView = UIView()
     
+    private var user: AppUser? {
+        return UserManager.shared.currentUser
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
         setupConstraints()
+        updateUserData()
+        
+        // Bildirimi dinleme
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdate), name: .currentUserDidChange, object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func handleUserUpdate() {
+        updateUserData()
+    }
+    
+    private func updateUserData() {
+        guard let user = user else { return }
+        
+        // Profil Resmini Güncelle
+        if let profileImageUrl = URL(string: user.profileImageUrl) {
+            profileImageView.kf.setImage(with: profileImageUrl)
+        } else {
+            profileImageView.image = UIImage(named: "defaultProfile")
+        }
+        
+        // Kullanıcı Adı ve Biyografi
+        usernameLabel.text = "@\(user.nickname)"
+        bioLabel.text = user.aboutMe.isEmpty ? "No bio available." : user.aboutMe
+        
+        // İstatistikleri Güncelle
+        postsLabel.text = "\(user.posts.count)\nPosts"
+        followersLabel.text = "\(user.followers.count)\nFollowers"
+        followingLabel.text = "\(user.following.count)\nFollowing"
+    }
+    
     private func setupSubviews() {
         // Profil Resmi
-        profileImageView.image = UIImage(named: "Mert")
         profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
         addSubview(profileImageView)
         
-        // İstatistikler (Gönderiler, Takipçi, Takip)
-        postsLabel.text = "43\nPosts"
+        // İstatistikler
         postsLabel.numberOfLines = 2
         postsLabel.textAlignment = .center
         postsLabel.font = .boldSystemFont(ofSize: 16)
         
-        followersLabel.text = "1,613\nFollowers"
         followersLabel.numberOfLines = 2
         followersLabel.textAlignment = .center
         followersLabel.font = .boldSystemFont(ofSize: 16)
         
-        followingLabel.text = "919\nFollowing"
         followingLabel.numberOfLines = 2
         followingLabel.textAlignment = .center
         followingLabel.font = .boldSystemFont(ofSize: 16)
         
-        // İstatistikleri StackView'da birleştir
+        // StackView
         statsStackView.axis = .horizontal
         statsStackView.alignment = .center
         statsStackView.distribution = .equalSpacing
@@ -64,15 +93,11 @@ final class ProfileHeaderView: UIView {
         statsStackView.addArrangedSubview(followingLabel)
         addSubview(statsStackView)
         
-        // Kullanıcı Adı
-        usernameLabel.text = "@shopie.Joll"
         usernameLabel.font = .systemFont(ofSize: 14)
         usernameLabel.textColor = .gray
         usernameLabel.textAlignment = .left
         addSubview(usernameLabel)
         
-        // Biyografi
-        bioLabel.text = "27 year old, interested in economics, dog mom."
         bioLabel.font = .systemFont(ofSize: 14)
         bioLabel.textColor = .darkGray
         bioLabel.numberOfLines = 0
@@ -81,11 +106,12 @@ final class ProfileHeaderView: UIView {
         
         separatorView.backgroundColor = .transparentGray
         addSubview(separatorView)
-        // Ayırıcı çizgi (separatorView) yerleşimi
+        
+        // Çizgi
         separatorView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview() // Yatay kenarlardan boşluk
+            make.left.right.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(1) // Çizgi kalınlığı
+            make.height.equalTo(1)
         }
     }
     
@@ -114,5 +140,9 @@ final class ProfileHeaderView: UIView {
             make.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(16)
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

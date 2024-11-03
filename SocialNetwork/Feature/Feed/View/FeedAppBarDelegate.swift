@@ -16,16 +16,20 @@ protocol FeedAppBarDelegate: AnyObject {
 
 final class FeedAppBar: UIView {
     
+    private var user = UserManager.shared.currentUser
     weak var delegate: FeedAppBarDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+     
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+   
     
     private func setupView() {
         self.backgroundColor = .white
@@ -44,7 +48,7 @@ final class FeedAppBar: UIView {
         
         // Karşılama metni
         let greetingLabel = UILabel()
-        greetingLabel.text = "Hello, Sophie"
+        greetingLabel.text = user?.username
         greetingLabel.font = UIFont.dynamicFont(size: 18,weight: .bold)
         addSubview(greetingLabel)
         greetingLabel.snp.makeConstraints { make in

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9444B8F42CD7DC2500605799 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9444B8F32CD7DC2500605799 /* Kingfisher */; };
 		94BCF6352CD2B1AB009CB96E /* NeonSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 94BCF6342CD2B1AB009CB96E /* NeonSDK */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9444B8F42CD7DC2500605799 /* Kingfisher in Frameworks */,
 				94BCF6352CD2B1AB009CB96E /* NeonSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = SocialNetwork;
 			packageProductDependencies = (
 				94BCF6342CD2B1AB009CB96E /* NeonSDK */,
+				9444B8F32CD7DC2500605799 /* Kingfisher */,
 			);
 			productName = SocialNetwork;
 			productReference = 94E1379D2CD26D0900C25C76 /* SocialNetwork.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */,
+				9444B8F22CD7DC2500605799 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94E1379E2CD26D0900C25C76 /* Products */;
@@ -344,6 +348,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9444B8F22CD7DC2500605799 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.0;
+			};
+		};
 		94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/neon-apps/neon-sdk.git";
@@ -355,6 +367,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9444B8F32CD7DC2500605799 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9444B8F22CD7DC2500605799 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		94BCF6342CD2B1AB009CB96E /* NeonSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 94BCF6332CD2B1AB009CB96E /* XCRemoteSwiftPackageReference "neon-sdk" */;

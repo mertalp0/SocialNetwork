@@ -7,13 +7,14 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 import NeonSDK
 
-final class FeedCell: NeonTableViewCell<PostModel> {
+final class FeedCell: NeonTableViewCell<Post> {
     
     private let profileImageView = UIImageView()
     private let usernameLabel = UILabel()
-    private let handleLabel = UILabel()
+    private let nickNameLabel = UILabel()
     private let dateLabel = UILabel()
     private let contentLabel = UILabel()
     private let postImageView = UIImageView()
@@ -37,17 +38,16 @@ final class FeedCell: NeonTableViewCell<PostModel> {
         profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
-        profileImageView.image = UIImage(named: "Mert") // Varsayılan profil resmi
         contentView.addSubview(profileImageView)
         
         // Kullanıcı Adı
         usernameLabel.font = .boldSystemFont(ofSize: 16)
         contentView.addSubview(usernameLabel)
         
-        // Kullanıcı Handle'ı
-        handleLabel.font = .systemFont(ofSize: 14)
-        handleLabel.textColor = .gray
-        contentView.addSubview(handleLabel)
+        // Kullanıcı Nickname
+        nickNameLabel.font = .systemFont(ofSize: 14)
+        nickNameLabel.textColor = .gray
+        contentView.addSubview(nickNameLabel)
         
         // Tarih
         dateLabel.font = .systemFont(ofSize: 12)
@@ -55,12 +55,12 @@ final class FeedCell: NeonTableViewCell<PostModel> {
         contentView.addSubview(dateLabel)
         
         // İçerik
-        contentLabel.font = UIFont.dynamicFont(size: 13,weight: .semibold)
+        contentLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
         
         // Post Resmi (Opsiyonel)
-        postImageView.layer.cornerRadius = .cornerRadius
+        postImageView.layer.cornerRadius = 10
         postImageView.clipsToBounds = true
         postImageView.contentMode = .scaleAspectFill
         contentView.addSubview(postImageView)
@@ -81,11 +81,13 @@ final class FeedCell: NeonTableViewCell<PostModel> {
         commentCountLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(commentCountLabel)
         
-        // Çizgi görünümünü ayarlayın
-        separatorView.backgroundColor = .transparentGray
+        separatorView.backgroundColor = .lightGray.withAlphaComponent(0.5)
         contentView.addSubview(separatorView)
         
-        // SnapKit ile yerleşim
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.top.left.equalToSuperview().offset(16)
             make.width.height.equalTo(40)
@@ -96,7 +98,7 @@ final class FeedCell: NeonTableViewCell<PostModel> {
             make.left.equalTo(profileImageView.snp.right).offset(8)
         }
         
-        handleLabel.snp.makeConstraints { make in
+        nickNameLabel.snp.makeConstraints { make in
             make.top.equalTo(usernameLabel.snp.bottom).offset(2)
             make.left.equalTo(usernameLabel)
         }
@@ -106,23 +108,19 @@ final class FeedCell: NeonTableViewCell<PostModel> {
             make.right.equalToSuperview().inset(16)
         }
         
-        // İçerik Resmi (postImageView) ve İçerik Metni (contentLabel)
         postImageView.snp.makeConstraints { make in
-            make.top.equalTo(handleLabel.snp.bottom).offset(12)
-            make.right.equalToSuperview().inset(16)
-            make.width.equalTo(100)
-            make.height.equalTo(100)
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(12)
+            make.left.right.equalToSuperview().inset(16)
+            make.height.equalTo(200)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(handleLabel.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalTo(postImageView.snp.left).offset(-8) // Sağdaki resimle arasında boşluk bırak
-            make.bottom.lessThanOrEqualTo(postImageView.snp.bottom) // Resim yüksekliğine göre sınırla
+            make.top.equalTo(postImageView.snp.bottom).offset(8)
+            make.left.right.equalToSuperview().inset(16)
         }
         
         likeButton.snp.makeConstraints { make in
-            make.top.equalTo(postImageView.snp.bottom).offset(12)
+            make.top.equalTo(contentLabel.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(16)
             make.width.height.equalTo(24)
         }
@@ -143,36 +141,31 @@ final class FeedCell: NeonTableViewCell<PostModel> {
             make.left.equalTo(commentButton.snp.right).offset(4)
         }
         
-        // Ayırıcı çizgi (separatorView) yerleşimi
         separatorView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(16) // Yatay kenarlardan boşluk
+            make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
-            make.height.equalTo(1) // Çizgi kalınlığı
+            make.height.equalTo(1)
         }
     }
     
-    override func configure(with post: PostModel) {
-        // Profil resmini ayarla veya varsayılan resmi kullan
-        if let profileImageName = post.profileImageName, let profileImage = UIImage(named: profileImageName) {
-            profileImageView.image = profileImage
-        } else {
-            profileImageView.image = UIImage(named: "defaultProfile") // Varsayılan resim
+    override func configure(with post: Post) {
+        if let url = URL(string: post.userImageUrl) {
+            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
         }
         
         usernameLabel.text = post.username
-        handleLabel.text = post.handle
-        dateLabel.text = post.date
-        contentLabel.text = post.content
+        nickNameLabel.text = "@\(post.userNickname)"
+        dateLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .none)
+        contentLabel.text = post.text
         
-        // Gönderi resmini ayarla veya gizle
-        if let postImageName = post.postImageName, let postImage = UIImage(named: postImageName) {
-            postImageView.image = postImage
+        if let imageUrl = post.imageUrl, let url = URL(string: imageUrl) {
+            postImageView.kf.setImage(with: url)
             postImageView.isHidden = false
         } else {
             postImageView.isHidden = true
         }
         
-        likeCountLabel.text = "\(post.likeCount)"
-        commentCountLabel.text = "\(post.commentCount)"
+        likeCountLabel.text = "\(post.likers.count)"
+        commentCountLabel.text = "\(post.commenters.count)"
     }
 }

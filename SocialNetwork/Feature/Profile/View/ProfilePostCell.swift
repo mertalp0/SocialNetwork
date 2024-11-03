@@ -41,7 +41,7 @@ final class ProfilePostCell: NeonTableViewCell<PostModel> {
         
         // İçerik Yığını (Sağ Sütun)
         contentStackView.axis = .vertical
-        contentStackView.spacing = 6
+        contentStackView.spacing = 4
         contentStackView.alignment = .leading
         contentView.addSubview(contentStackView)
         

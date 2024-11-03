@@ -12,6 +12,8 @@ import FirebaseFirestore
 class UserService {
     private let db = Firestore.firestore()
     private let usersCollection = "users"
+        
+    init(){}
     
     // MARK: - Save User to Firestore
     func saveUser(user: AppUser, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -103,5 +105,16 @@ class UserService {
             followers: followers,
             following: following
         )
+    }
+    
+    func updateUserPosts(userId: String, posts: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.updateData(["posts": posts]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
     }
 }

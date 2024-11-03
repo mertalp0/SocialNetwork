@@ -12,13 +12,16 @@ final class FeedVC: BaseVC<FeedViewModel> {
     
     private var appBar: FeedAppBar!
     private var createButton: CustomButton!
-    private var tableView: NeonTableView<PostModel, FeedCell>!
+    private var tableView: NeonTableView<Post, FeedCell>!
+    private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppBar()
         setupTableView()
         setupCreateButton()
+        
+        fetchPostsAndUpdateTableView()
     }
     
     private func setupAppBar() {
@@ -47,11 +50,12 @@ final class FeedVC: BaseVC<FeedViewModel> {
     }
     
     private func setupTableView() {
-        // Örnek veri
-        let data = Array(repeating: PostModel(profileImageName: "Mert", username: "Gabriel", handle: "@gabrielJoll", date: "Jun 2, 2022", content: "Washington State University: Organic farming is a double win - more profitable and more sustainable.", postImageName: "Mert", likeCount: 1100, commentCount: 123), count: 20)
+        tableView = NeonTableView<Post, FeedCell>(objects: [], heightForRows: 350)
         
-        // NeonTableView oluşturuyoruz ve FeedCell kullanıyoruz
-        tableView = NeonTableView<PostModel, FeedCell>(objects: data, heightForRows: 210)
+        // Refresh Control ayarları
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+        
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { make in
@@ -63,6 +67,18 @@ final class FeedVC: BaseVC<FeedViewModel> {
         // Hücre seçildiğinde bir işlem yapma
         tableView.didSelect = { object, indexPath in
             print("Selected: \(object.username) at row \(indexPath.row)")
+        }
+    }
+    
+    @objc private func handleRefresh() {
+        fetchPostsAndUpdateTableView()
+    }
+    
+    private func fetchPostsAndUpdateTableView() {
+        viewModel.fetchPosts { [weak self] in
+            // `fetchPosts` tamamlandıktan sonra tabloyu güncelle
+            self?.tableView.objects = self?.viewModel.posts ?? []
+            self?.refreshControl.endRefreshing()
         }
     }
 }

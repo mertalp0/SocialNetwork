@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBU8UmhlLA0LbnMojXjcCSWDOw3fdVaqVo</string>
+	<string>AIzaSyBA7vSq-IB_t3d8dotmy4bSKw5PBCltAN0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>6736626621</string>
+	<string>793446060112</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.mertalp.SocialNetwork.SocialNetwork</string>
 	<key>PROJECT_ID</key>
-	<string>socialnetwork-90689</string>
+	<string>neonapp-17858</string>
 	<key>STORAGE_BUCKET</key>
-	<string>socialnetwork-90689.firebasestorage.app</string>
+	<string>neonapp-17858.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:6736626621:ios:db3c807b508a86cb2c48d4</string>
+	<string>1:793446060112:ios:25a5911719098c5def4155</string>
 </dict>
 </plist>

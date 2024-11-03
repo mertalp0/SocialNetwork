@@ -19,16 +19,16 @@ struct PostModel {
 }
 
 
-struct Post {
+struct Post: Codable {
     let id: String
     let userId: String
     let userImageUrl: String
     let username: String
     let userNickname: String
     let text: String
-    let imageUrl: String? // Opsiyonel resim URL
-    let likers: [String] // Beğenen kullanıcı ID'leri
-    let commenters: [String] // Yorum yapan kullanıcı ID'leri
+    var imageUrl: String? 
+    let likers: [String]
+    let commenters: [String]
     let createdAt: Date
     
     init(id: String,

@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
+        FirebaseApp.configure()
         
         Neon.isUserPremium = true
         Neon.configure(
@@ -33,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            paywallVC: PaywallVC(viewModel: PaywallViewModel()),
 //            homeVC: LoginVC(viewModel: LoginViewModel())
 //        )
-        FirebaseApp.configure()
+    
         return true
     }
 }

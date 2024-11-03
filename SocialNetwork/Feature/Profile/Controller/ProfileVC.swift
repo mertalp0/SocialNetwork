@@ -23,6 +23,7 @@ final class ProfileVC: BaseVC<ProfileViewModel> {
         setupTableView()
     }
     
+    
     private func setupAppBar() {
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in

@@ -158,21 +158,20 @@ extension LoginVC: CustomButtonDelegate {
         viewModel.password = passwordTextField.text ?? ""
         
         
-        let mainTabBarController = MainTabBarController()
-        mainTabBarController.modalPresentationStyle = .fullScreen
-        self.present(mainTabBarController, animated: true)
         
-//        viewModel.login { result in
-//            switch result {
-//            case .success(_):
-//                print("success")
-//                
-//                burdaya
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+        viewModel.login { result in
+            switch result {
+            case .success(_):
+                
+                print("success")
+                let mainTabBarController = MainTabBarController()
+                mainTabBarController.modalPresentationStyle = .fullScreen
+                self.present(mainTabBarController, animated: true)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 

@@ -13,37 +13,58 @@ class LoginViewModel: BaseViewModel {
     var email: String = ""
     var password: String = ""
     
-    private let authService = AuthService()
+    private let authService = AuthService.shared
+    private let userService = UserService()
     private let validationManager = ValidationManager()
     
-    // Giriş doğrulama işlemi
-    func validateInputs() -> Bool {
+    // MARK: - Input Validation
+    private  func validateInputs() -> Bool {
         let isEmailValid = validationManager.validateEmail(email)
         let isPasswordValid = validationManager.validatePassword(password)
         
         if !isEmailValid {
-            triggerAlert(title: "Validation Error", message: "Invalid email format or empty.")
+            triggerAlert(title: "Validation Error", message: "Please enter a valid email address.")
         }
         
         if !isPasswordValid {
-            triggerAlert(title: "Validation Error", message: "Password must be at least 6 characters long.")
+            triggerAlert(title: "Validation Error", message: "Password must be at least 6 characters.")
         }
         
         return isEmailValid && isPasswordValid
     }
     
-    func login(completion: @escaping (Result<User, Error>) -> Void) {
+    // MARK: - Login Function
+    func login(completion: @escaping (Result<AppUser, Error>) -> Void) {
         guard validateInputs() else { return }
+        
         startLoading()
         
+        // 1. Auth ile kullanıcı giriş işlemi
         authService.login(email: email, password: password) { [weak self] result in
             self?.stopLoading()
             
             switch result {
             case .success(let user):
-                completion(.success(user))
+                // 2. Firestore’dan kullanıcı verisini al ve UserManager’a kaydet
+                self?.fetchAndSetUser(userId: user.uid, completion: completion)
+                
             case .failure(let error):
-                self?.triggerAlert(title: "Error", message: error.localizedDescription)
+                self?.triggerAlert(title: "Login Error", message: error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - Fetch and Set User
+    private func fetchAndSetUser(userId: String, completion: @escaping (Result<AppUser, Error>) -> Void) {
+        userService.getUser(id: userId) { result in
+            switch result {
+            case .success(let appUser):
+                UserManager.shared.setUser(appUser)  // UserManager ile kullanıcıyı ayarla
+                completion(.success(appUser))
+                
+            case .failure(let error):
+                self.triggerAlert(title: "User Fetch Error", message: "Unable to fetch user data.")
                 completion(.failure(error))
             }
         }
