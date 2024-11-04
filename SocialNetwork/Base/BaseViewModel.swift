@@ -5,34 +5,32 @@
 //  Created by mert alp on 30.10.2024.
 //
 
-protocol BaseViewModelProtocol {
-    
-}
+protocol BaseViewModelProtocol { }
 
-class BaseViewModel : BaseViewModelProtocol {
+class BaseViewModel: BaseViewModelProtocol {
     
-    let networkManager : NetworkManager = NetworkManager()
+    // MARK: - Properties
+    let networkManager = NetworkManager()
     
-    var isLoading : ((Bool) -> Void)?
-    var showAlert : ((String, String) -> Void)?
+    var isLoading: ((Bool) -> Void)?
+    var showAlert: ((String, String) -> Void)?
     
+    // MARK: - Network Connectivity
     var isConnectedToNetwork: Bool {
-            return NetworkManager.isConnectedToInternet()
-        }
+        return NetworkManager.isConnectedToInternet()
+    }
     
-    
-    func startLoading(){
+    // MARK: - Loading Methods
+    func startLoading() {
         isLoading?(true)
     }
     
-    func stopLoading(){
+    func stopLoading() {
         isLoading?(false)
     }
     
+    // MARK: - Alert Methods
     func triggerAlert(title: String, message: String) {
-           showAlert?(title, message)
+        showAlert?(title, message)
     }
-    
-    
-    
 }

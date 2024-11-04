@@ -28,13 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             homeVC: LoginVC(viewModel: LoginViewModel())
         )
         
-//        Neon.configure(
-//            window: &window,
-//            onboardingVC: OnboaringFirstVC(viewModel: OnboaringFirstViewModel()),
-//            paywallVC: PaywallVC(viewModel: PaywallViewModel()),
-//            homeVC: LoginVC(viewModel: LoginViewModel())
-//        )
-    
         return true
     }
 }

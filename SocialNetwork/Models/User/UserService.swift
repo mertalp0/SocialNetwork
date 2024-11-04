@@ -12,7 +12,7 @@ import FirebaseFirestore
 class UserService {
     private let db = Firestore.firestore()
     private let usersCollection = "users"
-        
+    
     init(){}
     
     // MARK: - Save User to Firestore
@@ -76,6 +76,21 @@ class UserService {
         }
     }
     
+    
+    func updateUserPosts(userId: String, posts: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.updateData(["posts": posts]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+}
+
+//MARK: -
+extension UserService {
     // MARK: - Map Firestore Data to AppUser
     private func mapUser(data: [String: Any]) -> AppUser? {
         guard
@@ -107,14 +122,4 @@ class UserService {
         )
     }
     
-    func updateUserPosts(userId: String, posts: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-        let userRef = db.collection("users").document(userId)
-        userRef.updateData(["posts": posts]) { error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }
-    }
 }

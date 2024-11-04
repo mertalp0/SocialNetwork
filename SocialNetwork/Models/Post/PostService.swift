@@ -78,33 +78,33 @@ class PostService {
     }
     
     // MARK: - Belirli Post ID'leriyle Gönderileri Çekme
-        func fetchPostsByIds(postIds: [String], completion: @escaping (Result<[Post], Error>) -> Void) {
-            
-            guard !postIds.isEmpty else {
-                completion(.success([])) // Boş bir dizi gönderilirse boş sonuç döner
-                return
-            }
-            
-            var fetchedPosts: [Post] = []
-            let group = DispatchGroup()
-            
-            for postId in postIds {
-                group.enter()
-                db.collection("posts").document(postId).getDocument { document, error in
-                    defer { group.leave() }
-                    
-                    if let document = document, document.exists {
-                        if let post = try? document.data(as: Post.self) {
-                            fetchedPosts.append(post)
-                        }
-                    } else if let error = error {
-                        print("Error fetching post with id \(postId): \(error)")
+    func fetchPostsByIds(postIds: [String], completion: @escaping (Result<[Post], Error>) -> Void) {
+        
+        guard !postIds.isEmpty else {
+            completion(.success([])) // Boş bir dizi gönderilirse boş sonuç döner
+            return
+        }
+        
+        var fetchedPosts: [Post] = []
+        let group = DispatchGroup()
+        
+        for postId in postIds {
+            group.enter()
+            db.collection("posts").document(postId).getDocument { document, error in
+                defer { group.leave() }
+                
+                if let document = document, document.exists {
+                    if let post = try? document.data(as: Post.self) {
+                        fetchedPosts.append(post)
                     }
+                } else if let error = error {
+                    print("Error fetching post with id \(postId): \(error)")
                 }
             }
-            
-            group.notify(queue: .main) {
-                completion(.success(fetchedPosts))
-            }
         }
+        
+        group.notify(queue: .main) {
+            completion(.success(fetchedPosts))
+        }
+    }
 }
