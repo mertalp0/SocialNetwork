@@ -10,12 +10,14 @@ import SnapKit
 
 final class PostCreateVC: BaseVC<PostCreateViewModel> {
     
+    // MARK: - UI Components
     private let appBar = CustomAppBar()
     private let profileImageView = UIImageView()
-    private let textView = UITextView()
+    private let textField = CustomTextField(placeholder: "What is your wisdom?")
     private let addPhotoButton = UIButton()
     private var shareButton: CustomButton!
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,6 +25,7 @@ final class PostCreateVC: BaseVC<PostCreateViewModel> {
         setupSubviews()
     }
     
+    // MARK: - Setup App Bar
     private func setupAppBar() {
         appBar.delegate = self
         view.addSubview(appBar)
@@ -33,8 +36,15 @@ final class PostCreateVC: BaseVC<PostCreateViewModel> {
         }
     }
     
+    // MARK: - Setup Subviews
     private func setupSubviews() {
-        profileImageView.image = UIImage(named: "Mert")
+        
+        if let profileImageUrlString = UserManager.shared.currentUser?.profileImageUrl,
+           let profileImageUrl = URL(string: profileImageUrlString) {
+            profileImageView.kf.setImage(with: profileImageUrl)
+        } else {
+            profileImageView.image = UIImage(named: "Mert")
+        }
         profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
@@ -45,15 +55,12 @@ final class PostCreateVC: BaseVC<PostCreateViewModel> {
             make.width.height.equalTo(40)
         }
         
-        textView.font = .systemFont(ofSize: 16)
-        textView.text = "What is your wisdom?"
-        textView.textColor = .gray
-        view.addSubview(textView)
-        textView.snp.makeConstraints { make in
+        view.addSubview(textField)
+        textField.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
             make.left.equalTo(profileImageView.snp.right).offset(12)
             make.right.equalToSuperview().inset(16)
-            make.height.equalTo(100)
+            make.height.equalTo(40)
         }
         
         addPhotoButton.setImage(UIImage(systemName: "plus.circle"), for: .normal)
@@ -100,7 +107,8 @@ extension PostCreateVC: CustomAppBarDelegate {
 extension PostCreateVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
         print("on tap share button")
-        viewModel.text = self.textView.text
+        textField.text = ""
+        viewModel.text = self.textField.text ?? ""
         viewModel.image = UIImage(named: "Mert")
         viewModel.createPost()
     }
