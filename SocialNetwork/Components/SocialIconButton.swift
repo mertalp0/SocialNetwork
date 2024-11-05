@@ -20,12 +20,12 @@ class SocialIconButton: UIView {
         case google
         case apple
         
-        var iconName: String {
+        var iconImage: UIImage? {
             switch self {
             case .google:
-                return "google_icon"
+                return ImageManager.shared.getImage(for: .googleIcon)
             case .apple:
-                return "apple_icon"
+                return ImageManager.shared.getImage(for: .appleIcon)
             }
         }
     }
@@ -37,7 +37,9 @@ class SocialIconButton: UIView {
     // MARK: - Initializers
     init(type: IconType) {
         super.init(frame: .zero)
-        iconImageView = UIImageView(image: UIImage(named: type.iconName))
+        
+        // Resmi ImageManager üzerinden al
+        iconImageView = UIImageView(image: type.iconImage)
         setupUI()
         setupGesture()
     }

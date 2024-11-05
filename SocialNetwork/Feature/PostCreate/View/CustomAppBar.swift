@@ -37,7 +37,6 @@ final class CustomAppBar: UIView {
     private func setupView() {
         backgroundColor = .white
         
-        // Back Button
         backButton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         backButton.tintColor = .black
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
@@ -48,9 +47,8 @@ final class CustomAppBar: UIView {
             make.width.height.equalTo(24)
         }
         
-        // Title Label
         titleLabel.text = "New Post"
-        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.font = UIFont.dynamicFont(size: 18 , weight: .bold)
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
@@ -58,7 +56,6 @@ final class CustomAppBar: UIView {
             make.center.equalToSuperview()
         }
         
-        // Cancel Button
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.systemBlue, for: .normal)
         cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)

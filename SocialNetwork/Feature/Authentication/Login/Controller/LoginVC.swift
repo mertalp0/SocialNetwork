@@ -10,7 +10,6 @@ import SnapKit
 
 class LoginVC: BaseVC<LoginViewModel> {
     
-    // MARK: - Properties
     private var loginTitle: UILabel!
     private var emailTextField: CustomTextField!
     private var passwordTextField: CustomTextField!
@@ -22,17 +21,15 @@ class LoginVC: BaseVC<LoginViewModel> {
     private var signUpButton: UILabel!
     private var loginButton: CustomButton!
     
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
-    // MARK: - Setup UI
     private func setupUI() {
         
         loginTitle = UILabel()
-        loginTitle.text = "Login"
+        loginTitle.text = l10n.loginTitle()
         loginTitle.font = UIFont.dynamicFont(size: 20, weight: .bold)
         view.addSubview(loginTitle)
         loginTitle.snp.makeConstraints { make in
@@ -40,7 +37,7 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.leading.equalToSuperview().offset(20)
         }
         
-        emailTextField = CustomTextField(placeholder: "Mail")
+        emailTextField = CustomTextField(placeholder: l10n.emailPlaceholder())
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(loginTitle.snp.bottom).offset(40)
@@ -48,7 +45,7 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.height.equalTo(40)
         }
         
-        passwordTextField = CustomTextField(placeholder: "Password")
+        passwordTextField = CustomTextField(placeholder: l10n.passwordPlaceholder())
         passwordTextField.isSecureTextEntry = true
         view.addSubview(passwordTextField)
         passwordTextField.snp.makeConstraints { make in
@@ -58,9 +55,9 @@ class LoginVC: BaseVC<LoginViewModel> {
         }
         
         forgotPasswordButton = UIButton(type: .system)
-        forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
+        forgotPasswordButton.setTitle(l10n.forgotPasswordText(), for: .normal)
         forgotPasswordButton.setTitleColor(.gray, for: .normal)
-        forgotPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        forgotPasswordButton.titleLabel?.font = UIFont.dynamicFont(size: 14)
         view.addSubview(forgotPasswordButton)
         forgotPasswordButton.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(10)
@@ -68,10 +65,10 @@ class LoginVC: BaseVC<LoginViewModel> {
         }
         
         orLabel = UILabel()
-        orLabel.text = "or"
+        orLabel.text = l10n.orText()
         orLabel.textColor = .gray
         orLabel.textAlignment = .center
-        orLabel.font = UIFont.systemFont(ofSize: 14)
+        orLabel.font = UIFont.dynamicFont(size: 14)
         view.addSubview(orLabel)
         orLabel.snp.makeConstraints { make in
             make.top.equalTo(forgotPasswordButton.snp.bottom).offset(20)
@@ -97,9 +94,9 @@ class LoginVC: BaseVC<LoginViewModel> {
         }
         
         signUpTextLabel = UILabel()
-        signUpTextLabel.text = "Don't have an account yet?"
+        signUpTextLabel.text = l10n.noAccountText()
         signUpTextLabel.textColor = .gray
-        signUpTextLabel.font = UIFont.systemFont(ofSize: 14)
+        signUpTextLabel.font = UIFont.dynamicFont(size: 14)
         view.addSubview(signUpTextLabel)
         signUpTextLabel.snp.makeConstraints { make in
             make.top.equalTo(googleButton.snp.bottom).offset(20)
@@ -107,7 +104,7 @@ class LoginVC: BaseVC<LoginViewModel> {
         }
         
         signUpButton = UILabel()
-        signUpButton.text = "sign up"
+        signUpButton.text = l10n.signUpText()
         signUpButton.textColor = .primaryColor
         signUpButton.font = UIFont.dynamicFont(size: 14)
         signUpButton.isUserInteractionEnabled = true
@@ -120,7 +117,7 @@ class LoginVC: BaseVC<LoginViewModel> {
         }
         
         loginButton = CustomButton(
-            title: "Continue",
+            title: l10n.continueButtonText(),
             backgroundColor: .transparentGray,
             type: .medium,
             textColor: .textColor

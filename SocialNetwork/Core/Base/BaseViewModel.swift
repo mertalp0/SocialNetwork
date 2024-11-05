@@ -9,6 +9,10 @@ protocol BaseViewModelProtocol { }
 
 class BaseViewModel: BaseViewModelProtocol {
     
+    var l10n: L10n {
+           return L10n.shared
+       }
+    
     // MARK: - Properties
     let networkManager = NetworkManager()
     

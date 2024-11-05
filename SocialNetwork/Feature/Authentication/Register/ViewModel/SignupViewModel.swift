@@ -31,12 +31,12 @@ class SignupViewModel: BaseViewModel {
         let isPasswordValid = validationManager.validatePassword(password)
         
         if selectedImage == nil {
-            triggerAlert(title: "Validation Error", message: "Please select a profile image.")
+            triggerAlert(title: l10n.validationErrorTitle(), message: l10n.signupSelectProfileImage())
             return false
         }
         
         if !isUsernameValid || !isNicknameValid || !isEmailValid || !isPasswordValid {
-            triggerAlert(title: "Validation Error", message: "Please make sure all fields are valid.")
+            triggerAlert(title: l10n.validationErrorTitle(), message: l10n.signupValidationErrorMessage())
             return false
         }
         
@@ -55,7 +55,7 @@ class SignupViewModel: BaseViewModel {
                 
             case .failure(let error):
                 self?.stopLoading()
-                self?.triggerAlert(title: "Signup Error", message: error.localizedDescription)
+                self?.triggerAlert(title: self!.l10n.signupErrorTitle(), message: error.localizedDescription)
             }
         }
     }
@@ -74,7 +74,7 @@ class SignupViewModel: BaseViewModel {
                 
             case .failure(let error):
                 self?.stopLoading()
-                self?.triggerAlert(title: "Image Upload Error", message: error.localizedDescription)
+                self?.triggerAlert(title: self!.l10n.imageUploadErrorTitle(), message: error.localizedDescription)
             }
         }
     }
@@ -98,10 +98,10 @@ class SignupViewModel: BaseViewModel {
             self?.stopLoading()
             switch result {
             case .success:
-                self?.triggerAlert(title: "Success", message: "You can login now.")
+                self?.triggerAlert(title: self!.l10n.signupSuccessTitle(), message: self!.l10n.signupSuccessMessage())
                 
             case .failure(let error):
-                self?.triggerAlert(title: "Firestore Error", message: error.localizedDescription)
+                self?.triggerAlert(title: self!.l10n.firestoreErrorTitle(), message: error.localizedDescription)
             }
         }
     }

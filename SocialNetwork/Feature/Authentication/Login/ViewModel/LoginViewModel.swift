@@ -24,11 +24,11 @@ class LoginViewModel: BaseViewModel {
         let isPasswordValid = validationManager.validatePassword(password)
         
         if !isEmailValid {
-            triggerAlert(title: "Validation Error", message: "Please enter a valid email address.")
+            triggerAlert(title: l10n.validationErrorTitle(), message: l10n.invalidEmailMessage())
         }
         
         if !isPasswordValid {
-            triggerAlert(title: "Validation Error", message: "Password must be at least 6 characters.")
+            triggerAlert(title: l10n.validationErrorTitle(), message: l10n.invalidPasswordMessage())
         }
         
         return isEmailValid && isPasswordValid
@@ -48,7 +48,7 @@ class LoginViewModel: BaseViewModel {
                 self?.fetchAndSetUser(userId: user.uid, completion: completion)
                 
             case .failure(let error):
-                self?.triggerAlert(title: "Login Error", message: error.localizedDescription)
+                self?.triggerAlert(title: self!.l10n.loginErrorTitle(), message: error.localizedDescription)
                 completion(.failure(error))
             }
         }
@@ -62,9 +62,9 @@ class LoginViewModel: BaseViewModel {
                 UserManager.shared.setUser(appUser)
                 completion(.success(appUser))
                 
-            case .failure(let error):
-                self?.triggerAlert(title: "User Fetch Error", message: "Unable to fetch user data.")
-                completion(.failure(error))
+            case .failure:
+                self?.triggerAlert(title: self!.l10n.userFetchErrorTitle(), message: self!.l10n.userFetchErrorMessage())
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: self!.l10n.userFetchErrorMessage()])))
             }
         }
     }

@@ -1,4 +1,3 @@
-//
 //  ImageManager.swift
 //  SocialNetwork
 //
@@ -16,7 +15,8 @@ final class ImageManager {
     
     // MARK: - App Icons
     enum AppIcons: String {
-        case play = "play.fill"
+        case profilePlaceholder = "person.crop.circle.fill.badge.plus"
+        case backButtonIcon = "chevron.backward"
     }
     
     func getImage(named name: AppIcons) -> UIImage? {
@@ -25,7 +25,9 @@ final class ImageManager {
     
     // MARK: - App Images
     enum AppImages: String {
-        case applause = "applause"
+        case appleIcon = "apple_icon"
+        case googleIcon = "google_icon"
+        case mert = "Mert"
     }
     
     func getImage(for image: AppImages) -> UIImage? {

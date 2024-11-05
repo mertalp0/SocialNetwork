@@ -32,10 +32,12 @@ final class CommentVC: BaseVC<CommentViewModel> {
         setupSendButton()
         
         fetchComments()
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchComments()
+       
     }
     
     private func setupUI() {
@@ -131,6 +133,7 @@ final class CommentVC: BaseVC<CommentViewModel> {
         guard let commentIds = viewModel.post?.commenters else { return }
         viewModel.fetchComments(commentIds: commentIds) { [weak self] success in
             if success {
+                
                 self?.updateNoCommentsLabelVisibility()
                 self?.tableView.reloadData()
             } else {
@@ -176,7 +179,6 @@ extension CommentVC: CustomButtonDelegate {
         
         viewModel.pushComment(text: commentText) { [weak self] success in
             if success {
-                self?.fetchComments()
                 self?.commentTextField.text = ""
                 self?.tableView.reloadData()
             } else {

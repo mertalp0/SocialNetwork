@@ -27,6 +27,11 @@ final class ProfileVC: BaseVC<ProfileViewModel> {
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdate), name: .currentUserDidChange, object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetchUserPosts()
+        tableView.reloadData()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

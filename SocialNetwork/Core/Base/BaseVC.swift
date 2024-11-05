@@ -13,6 +13,10 @@ class BaseVC <TypeViewModel: BaseViewModel> : UIViewController {
    
     private var loadingView: UIView?
     
+    var l10n: L10n {
+           return L10n.shared
+    }
+    
     init(viewModel: TypeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

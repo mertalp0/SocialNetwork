@@ -44,7 +44,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
     
     private func setupTitle() {
         signUpTitle = UILabel()
-        signUpTitle.text = "Sign up"
+        signUpTitle.text = l10n.signUpTitle()
         signUpTitle.font = UIFont.dynamicFont(size: 20, weight: .bold)
         view.addSubview(signUpTitle)
         
@@ -61,7 +61,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         profileImageContainerView.layer.masksToBounds = true
         view.addSubview(profileImageContainerView)
         
-        profileImageView = UIImageView(image: UIImage(systemName: "person.crop.circle.fill.badge.plus"))
+        profileImageView = UIImageView(image: ImageManager.shared.getImage(named: .profilePlaceholder))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.tintColor = .lightGray
@@ -82,11 +82,11 @@ class SignUpVC: BaseVC<SignupViewModel> {
     }
     
     private func setupTextFields() {
-        usernameTextField = createTextField(placeholder: "Username")
-        nicknameTextField = createTextField(placeholder: "Nickname")
-        mailTextField = createTextField(placeholder: "Mail")
-        passwordTextField = createTextField(placeholder: "Password")
-        aboutMeTextField = createTextField(placeholder: "About Me")
+        usernameTextField = createTextField(placeholder: l10n.usernamePlaceholder())
+        nicknameTextField = createTextField(placeholder: l10n.nicknamePlaceholder())
+        mailTextField = createTextField(placeholder: l10n.emailPlaceholder())
+        passwordTextField = createTextField(placeholder: l10n.passwordPlaceholder())
+        aboutMeTextField = createTextField(placeholder: l10n.aboutMePlaceholder())
         
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textContentType = .none
@@ -122,10 +122,10 @@ class SignUpVC: BaseVC<SignupViewModel> {
     
     private func setupSocialButtons() {
         orLabel = UILabel()
-        orLabel.text = "or"
+        orLabel.text = l10n.orText()
         orLabel.textColor = .gray
         orLabel.textAlignment = .center
-        orLabel.font = UIFont.systemFont(ofSize: 14)
+        orLabel.font = UIFont.dynamicFont(size: 14)
         view.addSubview(orLabel)
         
         orLabel.snp.makeConstraints { make in
@@ -156,9 +156,9 @@ class SignUpVC: BaseVC<SignupViewModel> {
     
     private func setupSignUpButton() {
         alreadyHaveAccountLabel = UILabel()
-        alreadyHaveAccountLabel.text = "Already have an account?"
+        alreadyHaveAccountLabel.text = l10n.alreadyHaveAccountText()
         alreadyHaveAccountLabel.textColor = .gray
-        alreadyHaveAccountLabel.font = UIFont.systemFont(ofSize: 14)
+        alreadyHaveAccountLabel.font = UIFont.dynamicFont(size: 14)
         view.addSubview(alreadyHaveAccountLabel)
         
         alreadyHaveAccountLabel.snp.makeConstraints { make in
@@ -167,7 +167,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         }
         
         loginButton = UILabel()
-        loginButton.text = "login"
+        loginButton.text = l10n.loginText()
         loginButton.textColor = .primaryColor
         loginButton.font = UIFont.dynamicFont(size: 14)
         loginButton.isUserInteractionEnabled = true
@@ -181,7 +181,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(loginTapped))
         loginButton.addGestureRecognizer(tapGesture)
         
-        signUpButton = CustomButton(title: "Sign up", backgroundColor: .transparentGray, type: .medium, textColor: .textColor)
+        signUpButton = CustomButton(title: l10n.signUpButtonText(), backgroundColor: .transparentGray, type: .medium, textColor: .textColor)
         signUpButton.delegate = self
         view.addSubview(signUpButton)
         

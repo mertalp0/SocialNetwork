@@ -1,9 +1,52 @@
-/* 
+/*
   Localizable.strings
   SocialNetwork
 
   Created by mert alp on 3.11.2024.
-  
 */
 
-"welcome_message" = "Welcome..";
+/* Login View Model */
+"validation_error_title" = "Validation Error";
+"invalid_email_message" = "Please enter a valid email address.";
+"invalid_password_message" = "Password must be at least 6 characters.";
+"login_error_title" = "Login Error";
+"user_fetch_error_title" = "User Fetch Error";
+"user_fetch_error_message" = "Unable to fetch user data.";
+
+/* Login View Controller */
+"login_title" = "Login";
+"email_placeholder" = "Mail";
+"password_placeholder" = "Password";
+"forgot_password" = "Forgot Password?";
+"or_text" = "or";
+"no_account" = "Don't have an account yet?";
+"sign_up" = "Sign Up";
+"continue_button_text" = "Continue";
+
+/* Sign Up View Model */
+"signup_validation_error_message" = "Validation Error";
+"signup_select_profile_image" = "Please select a profile image.";
+"signup_error_title" = "Sign Up Error";
+"signup_success_title" = "Success";
+"signup_success_message" = "Account created successfully!";
+"signup_failure" = "Account creation failed.";
+"image_upload_error_title" = "Image Upload Error";
+"firestore_error_title" = "Firestore Error";
+"signup_invalid_username" = "Username must be at least 3 characters.";
+"signup_invalid_password" = "Password must be at least 6 characters.";
+"signup_general_error_message" = "Please make sure all fields are valid.";
+
+/* Sign Up View Controller */
+"sign_up_title" = "Sign Up";
+"username_placeholder" = "Username";
+"nickname_placeholder" = "Nickname";
+"about_me_placeholder" = "About Me";
+"already_have_account_text" = "Already have an account?";
+"login_text" = "Login";
+"sign_up_button_text" = "Sign Up";
+
+/* General Errors */
+"network_error_title" = "Network Error";
+"network_error_message" = "Please check your internet connection.";
+"unknown_error_title" = "Unknown Error";
+"unknown_error_message" = "Something went wrong. Please try again.";

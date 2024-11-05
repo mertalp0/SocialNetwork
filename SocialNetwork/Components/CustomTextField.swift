@@ -26,7 +26,7 @@ class CustomTextField: UITextField {
     private func setupTextField() {
         borderStyle = .none
         font = UIFont.dynamicFont(size: 14)
-        textColor = .black
+        textColor = .textColor
         
         let bottomBorder = UIView()
         bottomBorder.backgroundColor = .lightGray
