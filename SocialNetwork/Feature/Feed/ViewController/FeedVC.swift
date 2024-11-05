@@ -101,9 +101,17 @@ extension FeedVC: FeedAppBarDelegate {
 extension FeedVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
         print("Create button tapped")
-        let viewModel = PostCreateViewModel()
-        let postCreateVC = PostCreateVC(viewModel: viewModel)
-        present(destinationVC: postCreateVC, slideDirection: .up)
+        if (Neon.isUserPremium) {
+            let viewModel = PostCreateViewModel()
+            let postCreateVC = PostCreateVC(viewModel: viewModel)
+            present(destinationVC: postCreateVC, slideDirection: .up)
+        }
+        else {
+            let viewModel = PaywallViewModel()
+            let paywallCV = PaywallVC(viewModel: viewModel)
+            paywallCV.canDismiss = true
+            present(destinationVC: paywallCV, slideDirection: .up)
+        }
     }
 }
 

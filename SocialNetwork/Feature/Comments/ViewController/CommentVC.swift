@@ -34,6 +34,10 @@ final class CommentVC: BaseVC<CommentViewModel> {
         fetchComments()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetchComments()
+    }
+    
     private func setupUI() {
         view.addSubview(appBar)
         appBar.delegate = self
@@ -127,8 +131,8 @@ final class CommentVC: BaseVC<CommentViewModel> {
         guard let commentIds = viewModel.post?.commenters else { return }
         viewModel.fetchComments(commentIds: commentIds) { [weak self] success in
             if success {
-                self?.tableView.reloadData()
                 self?.updateNoCommentsLabelVisibility()
+                self?.tableView.reloadData()
             } else {
                 print("Failed to fetch comments")
             }

@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         FirebaseApp.configure()
         
-        Neon.isUserPremium = true
         Neon.configure(
             window: &window,
             onboardingVC: OnboardingViewController(),
