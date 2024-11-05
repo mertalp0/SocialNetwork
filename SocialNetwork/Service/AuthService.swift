@@ -8,14 +8,14 @@
 import Foundation
 import FirebaseAuth
 
+// MARK: - AuthService
 class AuthService {
     
+    // MARK: - Properties
     static let shared = AuthService()
-    
-    // Güncel oturum açmış kullanıcı
     var currentUser: User?
     
-    // MARK: - Kayıt İşlemi
+    // MARK: - Sign Up
     func signUp(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard NetworkManager.isConnectedToInternet() else {
             let error = NSError(domain: "", code: -1009, userInfo: [NSLocalizedDescriptionKey: "No internet connection."])
@@ -27,14 +27,13 @@ class AuthService {
             if let error = error {
                 completion(.failure(error))
             } else if let user = authResult?.user {
-                // currentUser olarak atama
                 self.currentUser = user
                 completion(.success(user))
             }
         }
     }
     
-    // MARK: - Giriş İşlemi
+    // MARK: - Login
     func login(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard NetworkManager.isConnectedToInternet() else {
             let error = NSError(domain: "", code: -1009, userInfo: [NSLocalizedDescriptionKey: "No internet connection."])
@@ -52,7 +51,7 @@ class AuthService {
         }
     }
     
-    // MARK: - Kullanıcıyı Çıkış Yaptırma
+    // MARK: - Logout
     func logout(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             try Auth.auth().signOut()
@@ -62,6 +61,4 @@ class AuthService {
             completion(.failure(error))
         }
     }
-    
-  
 }

@@ -7,8 +7,10 @@
 
 import Foundation
 
+// MARK: - UserManager
 final class UserManager {
     
+    // MARK: - Properties
     static let shared = UserManager()
     
     private(set) var currentUser: AppUser? {
@@ -17,8 +19,10 @@ final class UserManager {
         }
     }
     
+    // MARK: - Initializer
     private init() {}
     
+    // MARK: - User Management
     func setUser(_ user: AppUser) {
         currentUser = user
     }
@@ -31,10 +35,10 @@ final class UserManager {
         guard var user = currentUser else { return }
         user.posts.append(postId)
         currentUser = user
-        
     }
 }
 
+// MARK: - Notification Extension
 extension Notification.Name {
     static let currentUserDidChange = Notification.Name("currentUserDidChange")
 }

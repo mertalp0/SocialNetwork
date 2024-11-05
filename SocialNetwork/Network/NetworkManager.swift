@@ -8,8 +8,10 @@
 import Foundation
 import SystemConfiguration
 
+// MARK: - NetworkManager
 class NetworkManager {
     
+    // MARK: - Internet Connectivity Check
     static func isConnectedToInternet() -> Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)

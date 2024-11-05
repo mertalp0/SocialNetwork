@@ -10,7 +10,15 @@ import SnapKit
 import Kingfisher
 import NeonSDK
 
+// FeedCell.swift
+protocol FeedCellDelegate: AnyObject {
+    func onTapLike(for post: Post)
+    func onTapComment(for post: Post)
+}
+
 final class FeedCell: NeonTableViewCell<Post> {
+    
+    static let reuseIdentifier = "FeedCell"
     
     private let profileImageView = UIImageView()
     private let usernameLabel = UILabel()
@@ -24,6 +32,8 @@ final class FeedCell: NeonTableViewCell<Post> {
     private let commentCountLabel = UILabel()
     private let separatorView = UIView()
     
+    weak var delegate: FeedCellDelegate?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
@@ -34,48 +44,42 @@ final class FeedCell: NeonTableViewCell<Post> {
     }
     
     private func setupSubviews() {
-        // Profil Resmi
         profileImageView.layer.cornerRadius = .cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
         contentView.addSubview(profileImageView)
         
-        // Kullanıcı Adı
         usernameLabel.font = .boldSystemFont(ofSize: 16)
         contentView.addSubview(usernameLabel)
         
-        // Kullanıcı Nickname
         nickNameLabel.font = .systemFont(ofSize: 14)
         nickNameLabel.textColor = .gray
         contentView.addSubview(nickNameLabel)
         
-        // Tarih
         dateLabel.font = .systemFont(ofSize: 12)
         dateLabel.textColor = .lightGray
         contentView.addSubview(dateLabel)
         
-        // İçerik
         contentLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
         
-        // Post Resmi (Opsiyonel)
         postImageView.layer.cornerRadius = 10
         postImageView.clipsToBounds = true
         postImageView.contentMode = .scaleAspectFill
         contentView.addSubview(postImageView)
         
-        // Beğeni Butonu ve Sayısı
         likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         likeButton.tintColor = .black
+        likeButton.addTarget(self, action: #selector (didTapLike), for: .touchUpInside)
         contentView.addSubview(likeButton)
         
         likeCountLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(likeCountLabel)
         
-        // Yorum Butonu ve Sayısı
         commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         commentButton.tintColor = .black
+        commentButton.addTarget(self, action: #selector(didTapComment), for: .touchUpInside)
         contentView.addSubview(commentButton)
         
         commentCountLabel.font = .systemFont(ofSize: 14)
@@ -168,4 +172,16 @@ final class FeedCell: NeonTableViewCell<Post> {
         likeCountLabel.text = "\(post.likers.count)"
         commentCountLabel.text = "\(post.commenters.count)"
     }
+}
+
+//MARK: - Action
+extension FeedCell {
+    @objc func didTapLike() {
+        delegate?.onTapLike()
+    }
+    
+    @objc func didTapComment() {
+        delegate?.onTapComment()
+    }
+
 }

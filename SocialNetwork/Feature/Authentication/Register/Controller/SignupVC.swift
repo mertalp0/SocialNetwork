@@ -10,6 +10,7 @@ import SnapKit
 
 class SignUpVC: BaseVC<SignupViewModel> {
     
+    // MARK: - UI Components
     private var signUpTitle: UILabel!
     private var profileImageContainerView: UIView!
     private var profileImageView: UIImageView!
@@ -26,11 +27,13 @@ class SignUpVC: BaseVC<SignupViewModel> {
     private var signUpButton: CustomButton!
     private var selectedProfileImage: UIImage?
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // MARK: - Setup UI
     private func setupUI() {
         setupTitle()
         setupProfileImageView()
@@ -44,6 +47,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         signUpTitle.text = "Sign up"
         signUpTitle.font = UIFont.dynamicFont(size: 20, weight: .bold)
         view.addSubview(signUpTitle)
+        
         signUpTitle.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
             make.leading.equalToSuperview().offset(20)
@@ -68,6 +72,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
             make.centerX.equalToSuperview()
             make.width.height.equalTo(100)
         }
+        
         profileImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -106,10 +111,12 @@ class SignUpVC: BaseVC<SignupViewModel> {
     private func createTextField(placeholder: String) -> CustomTextField {
         let textField = CustomTextField(placeholder: placeholder)
         view.addSubview(textField)
+        
         textField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
+        
         return textField
     }
     
@@ -120,6 +127,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         orLabel.textAlignment = .center
         orLabel.font = UIFont.systemFont(ofSize: 14)
         view.addSubview(orLabel)
+        
         orLabel.snp.makeConstraints { make in
             make.top.equalTo(aboutMeTextField.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
@@ -152,6 +160,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         alreadyHaveAccountLabel.textColor = .gray
         alreadyHaveAccountLabel.font = UIFont.systemFont(ofSize: 14)
         view.addSubview(alreadyHaveAccountLabel)
+        
         alreadyHaveAccountLabel.snp.makeConstraints { make in
             make.top.equalTo(googleButton.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
@@ -163,16 +172,19 @@ class SignUpVC: BaseVC<SignupViewModel> {
         loginButton.font = UIFont.dynamicFont(size: 14)
         loginButton.isUserInteractionEnabled = true
         view.addSubview(loginButton)
+        
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(alreadyHaveAccountLabel.snp.bottom)
             make.centerX.equalTo(alreadyHaveAccountLabel.snp.centerX)
         }
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(loginTapped))
         loginButton.addGestureRecognizer(tapGesture)
         
         signUpButton = CustomButton(title: "Sign up", backgroundColor: .transparentGray, type: .medium, textColor: .textColor)
         signUpButton.delegate = self
         view.addSubview(signUpButton)
+        
         signUpButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-40)
             make.centerX.equalToSuperview()

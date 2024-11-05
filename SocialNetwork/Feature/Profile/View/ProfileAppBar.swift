@@ -10,8 +10,10 @@ import SnapKit
 
 final class ProfileAppBar: UIView {
     
+    // MARK: - Properties
     private let titleLabel = UILabel()
     
+    // MARK: - Initializers
     init(title: String) {
         super.init(frame: .zero)
         setupView(title: title)
@@ -21,6 +23,7 @@ final class ProfileAppBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup
     private func setupView(title: String) {
         backgroundColor = .white
     
@@ -29,7 +32,6 @@ final class ProfileAppBar: UIView {
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
-        
         
         titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()

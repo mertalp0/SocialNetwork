@@ -8,8 +8,6 @@
 import UIKit
 
 extension UIColor {
-    /// HEX renk koduyla UIColor oluşturur
-    /// Örnek: UIColor(hex: "#51d266") veya UIColor(hex: "51d266")
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")

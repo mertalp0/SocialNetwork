@@ -7,7 +7,10 @@
 
 import Foundation
 
+// MARK: - AppUser Model
 struct AppUser {
+    
+    // MARK: - Properties
     let id: String
     let username: String
     let nickname: String
@@ -19,17 +22,19 @@ struct AppUser {
     let followers: [String]
     let following: [String]
     
-    init(id: String,
-         username: String,
-         nickname: String,
-         email: String,
-         password: String,
-         aboutMe: String,
-         profileImageUrl: String,
-         posts: [String] = [],
-         followers: [String] = [],
-         following: [String] = []) {
-        
+    // MARK: - Initializer
+    init(
+        id: String,
+        username: String,
+        nickname: String,
+        email: String,
+        password: String,
+        aboutMe: String,
+        profileImageUrl: String,
+        posts: [String] = [],
+        followers: [String] = [],
+        following: [String] = []
+    ) {
         self.id = id
         self.username = username
         self.nickname = nickname

@@ -8,12 +8,15 @@
 import UIKit
 import SnapKit
 
+// MARK: - CustomButtonDelegate
 protocol CustomButtonDelegate: AnyObject {
     func customButtonDidTap(_ button: CustomButton)
 }
 
+// MARK: - CustomButton
 class CustomButton: UIButton {
     
+    // MARK: - ButtonType Enum
     enum ButtonType {
         case small
         case medium
@@ -31,20 +34,16 @@ class CustomButton: UIButton {
         }
     }
     
+    // MARK: - Properties
     weak var delegate: CustomButtonDelegate?
     
+    // MARK: - Initializers
     init(title: String, backgroundColor: UIColor, type: ButtonType, textColor: UIColor) {
         super.init(frame: .zero)
         
-        self.setTitle(title, for: .normal)
-        self.backgroundColor = backgroundColor
-        self.setTitleColor(textColor, for: .normal)
-        self.layer.cornerRadius = .cornerRadius
-        self.clipsToBounds = true
-        self.titleLabel?.font = UIFont.dynamicFont(size: 16, weight: .bold)
+        setupButton(title: title, backgroundColor: backgroundColor, textColor: textColor)
         
         let dimensions = type.dimensions
-        
         self.snp.makeConstraints { make in
             make.width.equalTo(dimensions.width)
             make.height.equalTo(dimensions.height)
@@ -56,8 +55,22 @@ class CustomButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup
+    private func setupButton(title: String, backgroundColor: UIColor, textColor: UIColor) {
+        setTitle(title, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+        layer.cornerRadius = .cornerRadius
+        clipsToBounds = true
+        titleLabel?.font = UIFont.dynamicFont(size: 16, weight: .bold)
+    }
+}
 
-    @objc private func buttonTapped() {
+// MARK: - Actions
+private extension CustomButton {
+    
+    @objc func buttonTapped() {
         animateButtonPress {
             self.delegate?.customButtonDidTap(self)
         }

@@ -7,9 +7,10 @@
 
 import Foundation
 
+// MARK: - ValidationManager
 class ValidationManager {
     
-   
+    // MARK: - Email Validation
     func validateEmail(_ email: String) -> Bool {
         guard !email.isEmpty else {
             print("Validation Error: Email is required.")
@@ -27,7 +28,7 @@ class ValidationManager {
         return isValid
     }
     
-   
+    // MARK: - Password Validation
     func validatePassword(_ password: String, minLength: Int = 6) -> Bool {
         guard password.count >= minLength else {
             print("Validation Error: Password must be at least \(minLength) characters long.")
@@ -36,7 +37,7 @@ class ValidationManager {
         return true
     }
     
-    // Kullanıcı adı doğrulama fonksiyonu
+    // MARK: - Username Validation
     func validateUsername(_ username: String) -> Bool {
         guard !username.isEmpty else {
             print("Validation Error: Username is required.")
@@ -45,7 +46,7 @@ class ValidationManager {
         return true
     }
     
-    // Takma ad doğrulama fonksiyonu
+    // MARK: - Nickname Validation
     func validateNickname(_ nickname: String) -> Bool {
         guard !nickname.isEmpty else {
             print("Validation Error: Nickname is required.")

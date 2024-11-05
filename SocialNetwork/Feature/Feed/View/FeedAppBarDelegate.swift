@@ -46,7 +46,6 @@ final class FeedAppBar: UIView {
             make.width.height.equalTo(40)
         }
         
-        // Karşılama metni
         let greetingLabel = UILabel()
         greetingLabel.text = user?.username
         greetingLabel.font = UIFont.dynamicFont(size: 18,weight: .bold)
@@ -56,7 +55,6 @@ final class FeedAppBar: UIView {
             make.centerY.equalToSuperview()
         }
         
-        // Ayarlar butonu
         let settingsButton = UIButton()
         settingsButton.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
         settingsButton.tintColor = .gray

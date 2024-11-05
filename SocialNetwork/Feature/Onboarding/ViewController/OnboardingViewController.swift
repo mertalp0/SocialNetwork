@@ -4,22 +4,22 @@
 //
 //  Created by mert alp on 31.10.2024.
 //
-// OnboardingViewController.swift
-// SocialNetwork
 
 import UIKit
 import NeonSDK
 
+// MARK: - OnboardingPageDelegate Protocol
 protocol OnboardingPageDelegate: AnyObject {
     func didTapContinueButton(on page: UIViewController)
 }
 
+// MARK: - OnboardingViewController
 final class OnboardingViewController: UIViewController {
     
+    // MARK: - Properties
     private var pageViewController: UIPageViewController!
     
     private lazy var pages: [UIViewController] = {
-        
         let firstPage = FirstPageViewController()
         firstPage.delegate = self
         
@@ -29,11 +29,13 @@ final class OnboardingViewController: UIViewController {
         return [firstPage, secondPage]
     }()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPageViewController()
     }
     
+    // MARK: - Setup PageViewController
     private func setupPageViewController() {
         pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageViewController.dataSource = self
@@ -50,6 +52,7 @@ final class OnboardingViewController: UIViewController {
     }
 }
 
+// MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
 extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -67,6 +70,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
     }
 }
 
+// MARK: - OnboardingPageDelegate
 extension OnboardingViewController: OnboardingPageDelegate {
     func didTapContinueButton(on page: UIViewController) {
         guard let currentIndex = pages.firstIndex(of: page) else { return }
@@ -74,13 +78,10 @@ extension OnboardingViewController: OnboardingPageDelegate {
         if nextIndex < pages.count {
             pageViewController.setViewControllers([pages[nextIndex]], direction: .forward, animated: true, completion: nil)
         } else {
-            
             Neon.onboardingCompleted()
-            
             let loginViewModel = LoginViewModel()
             let loginVC = LoginVC(viewModel: loginViewModel)
             present(destinationVC: loginVC, slideDirection: .right)
-       
         }
     }
 }

@@ -5,15 +5,18 @@
 //  Created by mert alp on 3.11.2024.
 //
 
-
 import Foundation
 import FirebaseFirestore
 
-class UserService {
+// MARK: - UserService
+final class UserService {
+    
+    // MARK: - Properties
     private let db = Firestore.firestore()
     private let usersCollection = "users"
     
-    init(){}
+    // MARK: - Initializer
+    init() {}
     
     // MARK: - Save User to Firestore
     func saveUser(user: AppUser, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -76,9 +79,9 @@ class UserService {
         }
     }
     
-    
+    // MARK: - Update User Posts
     func updateUserPosts(userId: String, posts: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-        let userRef = db.collection("users").document(userId)
+        let userRef = db.collection(usersCollection).document(userId)
         userRef.updateData(["posts": posts]) { error in
             if let error = error {
                 completion(.failure(error))
@@ -89,8 +92,9 @@ class UserService {
     }
 }
 
-//MARK: -
+// MARK: - Helper Functions
 extension UserService {
+    
     // MARK: - Map Firestore Data to AppUser
     private func mapUser(data: [String: Any]) -> AppUser? {
         guard
@@ -121,5 +125,4 @@ extension UserService {
             following: following
         )
     }
-    
 }

@@ -10,6 +10,7 @@ import UIKit
 
 class SignupViewModel: BaseViewModel {
     
+    // MARK: - Properties
     private let signupService = AuthService()
     private let validationManager = ValidationManager()
     private let userService = UserService()
@@ -22,7 +23,7 @@ class SignupViewModel: BaseViewModel {
     var aboutMe: String = ""
     var selectedImage: UIImage?
     
-    // MARK: - Input Doğrulama
+    // MARK: - Input Validation
     func validateInputs() -> Bool {
         let isUsernameValid = validationManager.validateUsername(username)
         let isNicknameValid = validationManager.validateNickname(nickname)
@@ -34,7 +35,6 @@ class SignupViewModel: BaseViewModel {
             return false
         }
         
-        
         if !isUsernameValid || !isNicknameValid || !isEmailValid || !isPasswordValid {
             triggerAlert(title: "Validation Error", message: "Please make sure all fields are valid.")
             return false
@@ -43,12 +43,11 @@ class SignupViewModel: BaseViewModel {
         return true
     }
     
-    // MARK: - Signup İşlemi
+    // MARK: - Signup Function
     func signUp() {
         guard validateInputs() else { return }
         startLoading()
         
-        // 1. Kullanıcıyı Firebase Auth'a kaydet
         signupService.signUp(email: email, password: password) { [weak self] result in
             switch result {
             case .success(let user):
@@ -61,19 +60,16 @@ class SignupViewModel: BaseViewModel {
         }
     }
     
-    // MARK: - Resim Yükleme İşlemi
+    // MARK: - Image Upload Handling
     private func handleImageUpload(for userId: String) {
-        // Eğer profil resmi seçilmediyse doğrudan Firestore'a kaydetme işlemini gerçekleştir
         guard let image = selectedImage else {
             saveUserToFirestore(userId: userId, profileImageUrl: "")
             return
         }
         
-        // Profil resmini yükle
         imageService.uploadImage(image: image) { [weak self] result in
             switch result {
             case .success(let imageUrl):
-                // Resim URL'sini kullanarak Firestore'a kaydet
                 self?.saveUserToFirestore(userId: userId, profileImageUrl: imageUrl)
                 
             case .failure(let error):
@@ -83,9 +79,8 @@ class SignupViewModel: BaseViewModel {
         }
     }
     
-    // MARK: - Firestore'a Kullanıcı Bilgilerini Kaydetme
+    // MARK: - Save User to Firestore
     private func saveUserToFirestore(userId: String, profileImageUrl: String) {
-        
         let appUser = AppUser(
             id: userId,
             username: username,
@@ -94,9 +89,9 @@ class SignupViewModel: BaseViewModel {
             password: password,
             aboutMe: aboutMe,
             profileImageUrl: profileImageUrl,
-            posts: [],             // Varsayılan olarak boş array
-            followers: [],         // Varsayılan olarak boş array
-            following: []          // Varsayılan olarak boş array
+            posts: [],
+            followers: [],
+            following: []
         )
         
         userService.saveUser(user: appUser) { [weak self] result in

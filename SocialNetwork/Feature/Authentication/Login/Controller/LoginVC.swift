@@ -10,6 +10,7 @@ import SnapKit
 
 class LoginVC: BaseVC<LoginViewModel> {
     
+    // MARK: - Properties
     private var loginTitle: UILabel!
     private var emailTextField: CustomTextField!
     private var passwordTextField: CustomTextField!
@@ -21,11 +22,13 @@ class LoginVC: BaseVC<LoginViewModel> {
     private var signUpButton: UILabel!
     private var loginButton: CustomButton!
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // MARK: - Setup UI
     private func setupUI() {
         
         loginTitle = UILabel()
@@ -41,8 +44,7 @@ class LoginVC: BaseVC<LoginViewModel> {
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(loginTitle.snp.bottom).offset(40)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
         
@@ -55,7 +57,6 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.height.equalTo(40)
         }
         
-        // Forgot Password Button
         forgotPasswordButton = UIButton(type: .system)
         forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
         forgotPasswordButton.setTitleColor(.gray, for: .normal)
@@ -66,7 +67,6 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.trailing.equalTo(passwordTextField)
         }
         
-        // "or" Label
         orLabel = UILabel()
         orLabel.text = "or"
         orLabel.textColor = .gray
@@ -78,7 +78,6 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.centerX.equalToSuperview()
         }
         
-        // Google Login Button
         googleButton = SocialIconButton(type: .google)
         googleButton.delegate = self
         view.addSubview(googleButton)
@@ -88,7 +87,6 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.width.height.equalTo(40)
         }
         
-        // Apple Login Button
         appleButton = SocialIconButton(type: .apple)
         appleButton.delegate = self
         view.addSubview(appleButton)
@@ -98,36 +96,29 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.width.height.equalTo(40)
         }
         
-        // Sign Up Text Label
         signUpTextLabel = UILabel()
         signUpTextLabel.text = "Don't have an account yet?"
         signUpTextLabel.textColor = .gray
         signUpTextLabel.font = UIFont.systemFont(ofSize: 14)
         view.addSubview(signUpTextLabel)
-        
         signUpTextLabel.snp.makeConstraints { make in
             make.top.equalTo(googleButton.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         
-        // Sign Up Button Label
         signUpButton = UILabel()
         signUpButton.text = "sign up"
         signUpButton.textColor = .primaryColor
         signUpButton.font = UIFont.dynamicFont(size: 14)
         signUpButton.isUserInteractionEnabled = true
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped))
         signUpButton.addGestureRecognizer(tapGesture)
-        
         view.addSubview(signUpButton)
-        
         signUpButton.snp.makeConstraints { make in
             make.top.equalTo(signUpTextLabel.snp.top).offset(25)
             make.centerX.equalTo(signUpTextLabel)
         }
         
-        // Login Button
         loginButton = CustomButton(
             title: "Continue",
             backgroundColor: .transparentGray,
@@ -141,6 +132,10 @@ class LoginVC: BaseVC<LoginViewModel> {
             make.centerX.equalToSuperview()
         }
     }
+}
+
+// MARK: - Actions
+extension LoginVC {
     
     @objc private func signUpTapped() {
         let signupViewModel = SignupViewModel()
@@ -149,43 +144,38 @@ class LoginVC: BaseVC<LoginViewModel> {
     }
 }
 
+// MARK: - CustomButtonDelegate
 extension LoginVC: CustomButtonDelegate {
     
     func customButtonDidTap(_ button: CustomButton) {
         print("Login button tapped!")
-        
         viewModel.email = emailTextField.text ?? ""
         viewModel.password = passwordTextField.text ?? ""
         
-        
-        
         viewModel.login { result in
             switch result {
-            case .success(_):
-                
-                print("success")
+            case .success:
+                print("Login success")
                 let mainTabBarController = MainTabBarController()
                 mainTabBarController.modalPresentationStyle = .fullScreen
                 self.present(mainTabBarController, animated: true)
-                
             case .failure(let error):
-                print(error)
+                print("Login error: \(error)")
             }
         }
     }
 }
 
+// MARK: - SocialIconButtonDelegate
 extension LoginVC: SocialIconButtonDelegate {
     func socialIconButtonDidTap(_ button: SocialIconButton) {
-        switch button{
+        switch button {
         case googleButton:
-            print("google button tapped")
-            
+            print("Google button tapped")
         case appleButton:
-            print("apple button tapped")
-            
+            print("Apple button tapped")
         default:
-            print("unknown button tapped")
+            print("Unknown button tapped")
         }
     }
 }

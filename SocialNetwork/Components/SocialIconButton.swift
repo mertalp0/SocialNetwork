@@ -7,12 +7,15 @@
 
 import UIKit
 
+// MARK: - SocialIconButtonDelegate
 protocol SocialIconButtonDelegate: AnyObject {
     func socialIconButtonDidTap(_ button: SocialIconButton)
 }
 
+// MARK: - SocialIconButton
 class SocialIconButton: UIView {
     
+    // MARK: - IconType Enum
     enum IconType {
         case google
         case apple
@@ -26,9 +29,12 @@ class SocialIconButton: UIView {
             }
         }
     }
+    
+    // MARK: - Properties
     private var iconImageView: UIImageView!
     weak var delegate: SocialIconButtonDelegate?
     
+    // MARK: - Initializers
     init(type: IconType) {
         super.init(frame: .zero)
         iconImageView = UIImageView(image: UIImage(named: type.iconName))
@@ -40,6 +46,7 @@ class SocialIconButton: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup UI
     private func setupUI() {
         backgroundColor = .transparentGray
         layer.cornerRadius = .cornerRadius
@@ -53,12 +60,16 @@ class SocialIconButton: UIView {
         }
     }
     
+    // MARK: - Setup Gesture
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
     }
-    
-    @objc private func handleTap() {
+}
+
+// MARK: - Actions
+private extension SocialIconButton {
+    @objc func handleTap() {
         animateButtonPress {
             self.delegate?.socialIconButtonDidTap(self)
         }

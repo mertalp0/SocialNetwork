@@ -9,23 +9,22 @@ import Foundation
 
 final class LocalizationManager {
     
-    // Singleton instance
+    // MARK: - Singleton
     static let shared = LocalizationManager()
     
-    // App Strings
+    private init() {}
+    
+    // MARK: - Localization Keys
     enum LocalizationKeys {
         static let welcomeMessage = "welcome_message"
     }
     
-    // Private initializer to prevent external instantiation
-    private init() {}
-    
-    // Localized string fetcher
+    // MARK: - Localized String Fetcher
     static func localizedString(forKey key: String) -> String {
         return NSLocalizedString(key, comment: "")
     }
     
-    
+    // MARK: - Localized Messages
     func welcomeMessage() -> String {
         return LocalizationManager.localizedString(forKey: LocalizationKeys.welcomeMessage)
     }

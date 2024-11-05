@@ -8,15 +8,13 @@
 import Foundation
 import FirebaseFirestore
 
-class PostService {
+final class PostService {
     private let db = Firestore.firestore()
     
-    // MARK: - Post Kaydetme
+    // MARK: - Save Post
     func savePost(post: Post, completion: @escaping (Result<Void, Error>) -> Void) {
-        // Gönderiyi Firestore'a kaydetmek için id ile bir referans oluşturuyoruz
         let postRef = db.collection("posts").document(post.id)
         
-        // Post verilerini sözlük formatında kaydediyoruz
         do {
             try postRef.setData(from: post) { error in
                 if let error = error {
@@ -30,34 +28,10 @@ class PostService {
         }
     }
     
-    // MARK: - Tüm Gönderileri Çekme
+    // MARK: - Fetch All Posts
     func fetchPosts(completion: @escaping (Result<[Post], Error>) -> Void) {
         db.collection("posts")
-            .order(by: "createdAt", descending: true) // Tarihe göre sıralama
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                guard let documents = snapshot?.documents else {
-                    completion(.success([])) // Boş bir array döner
-                    return
-                }
-                
-                // Belgeleri `Post` modeline dönüştürme
-                let posts = documents.compactMap { document -> Post? in
-                    try? document.data(as: Post.self)
-                }
-                completion(.success(posts))
-            }
-    }
-    
-    // MARK: - Belirli Kullanıcının Gönderilerini Çekme
-    func fetchPostsForUser(userId: String, completion: @escaping (Result<[Post], Error>) -> Void) {
-        db.collection("posts")
-            .whereField("userId", isEqualTo: userId)
-            .order(by: "createdAt", descending: true) // Tarihe göre sıralama
+            .order(by: "createdAt", descending: true)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
@@ -69,7 +43,6 @@ class PostService {
                     return
                 }
                 
-                // Belgeleri `Post` modeline dönüştürme
                 let posts = documents.compactMap { document -> Post? in
                     try? document.data(as: Post.self)
                 }
@@ -77,11 +50,34 @@ class PostService {
             }
     }
     
-    // MARK: - Belirli Post ID'leriyle Gönderileri Çekme
+    // MARK: - Fetch Posts for Specific User
+    func fetchPostsForUser(userId: String, completion: @escaping (Result<[Post], Error>) -> Void) {
+        db.collection("posts")
+            .whereField("userId", isEqualTo: userId)
+            .order(by: "createdAt", descending: true)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    completion(.success([]))
+                    return
+                }
+                
+                let posts = documents.compactMap { document -> Post? in
+                    try? document.data(as: Post.self)
+                }
+                completion(.success(posts))
+            }
+    }
+    
+    // MARK: - Fetch Posts by IDs
     func fetchPostsByIds(postIds: [String], completion: @escaping (Result<[Post], Error>) -> Void) {
         
         guard !postIds.isEmpty else {
-            completion(.success([])) // Boş bir dizi gönderilirse boş sonuç döner
+            completion(.success([]))
             return
         }
         

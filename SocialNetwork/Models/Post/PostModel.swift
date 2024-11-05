@@ -1,36 +1,20 @@
-//
-//  PostModel.swift
-//  SocialNetwork
-//
-//  Created by mert alp on 31.10.2024.
-//
-
 import Foundation
 
-struct PostModel {
-    let profileImageName: String?
-    let username: String
-    let handle: String
-    let date: String
-    let content: String
-    let postImageName: String?
-    let likeCount: Int
-    let commentCount: Int
-}
-
-
 struct Post: Codable {
-    let id: String
-    let userId: String
-    let userImageUrl: String
-    let username: String
-    let userNickname: String
-    let text: String
-    var imageUrl: String? 
-    let likers: [String]
-    let commenters: [String]
-    let createdAt: Date
     
+    // MARK: - Properties
+    let id: String                    
+    let userId: String                
+    let userImageUrl: String          
+    let username: String              
+    let userNickname: String          
+    let text: String                  
+    var imageUrl: String?             
+    let likers: [String]              
+    let commenters: [String]          
+    let createdAt: Date               
+    
+    // MARK: - Initializer
     init(id: String,
          userId: String,
          userImageUrl: String,

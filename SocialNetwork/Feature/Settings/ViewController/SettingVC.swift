@@ -11,16 +11,18 @@ import NeonSDK
 
 final class SettingsVC: BaseVC<SettingsViewModel> {
     
+    // MARK: - Properties
     private let appBar = SettingsAppBar(title: "Settings")
     private var tableView: NeonTableView<SettingOption, SettingCell>!
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupAppBar()
         setupTableView()
     }
 
+    // MARK: - Setup
     private func setupAppBar() {
         appBar.delegate = self
         view.addSubview(appBar)
@@ -55,15 +57,15 @@ final class SettingsVC: BaseVC<SettingsViewModel> {
         }
     }
 
+    // MARK: - Actions
     private func handleOptionSelection(_ option: SettingOption) {
         if option.title == "Log Out" {
-            // Logout işlemi
             viewModel.logout { [weak self] result in
                 switch result {
                 case .success:
                     self?.navigateToLoginScreen()
                 case .failure(let error):
-                 print(error)
+                    print(error)
                 }
             }
         } else {
@@ -76,8 +78,6 @@ final class SettingsVC: BaseVC<SettingsViewModel> {
         let loginViewModel = LoginViewModel()
         let loginVC = LoginVC(viewModel: loginViewModel)
         present(destinationVC: loginVC, slideDirection: .right)
-        // Login ekranına yönlendirme işlemi
-      
     }
 }
 

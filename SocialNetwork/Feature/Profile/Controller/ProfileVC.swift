@@ -11,10 +11,12 @@ import NeonSDK
 
 final class ProfileVC: BaseVC<ProfileViewModel> {
     
+    // MARK: - Properties
     private let appBar = ProfileAppBar(title: "My Profile")
     private var tableView: NeonTableView<Post, ProfilePostCell>!
     private let profileHeaderView = ProfileHeaderView()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppBar()
@@ -22,19 +24,19 @@ final class ProfileVC: BaseVC<ProfileViewModel> {
         setupTableView()
         fetchUserPosts()
         
-        // Yeni bir post oluşturulduğunda veya kullanıcı güncellendiğinde dinlemek için gözlemci ekle
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdate), name: .currentUserDidChange, object: nil)
     }
     
-    // Gözlemciyi kaldırmak için `deinit`
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // MARK: - Selectors
     @objc private func handleUserUpdate() {
         fetchUserPosts()
     }
     
+    // MARK: - Setup UI
     private func setupAppBar() {
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
@@ -66,15 +68,14 @@ final class ProfileVC: BaseVC<ProfileViewModel> {
         }
     }
     
+    // MARK: - Data Fetching
     private func fetchUserPosts() {
-        // currentUser kontrolü yapıyoruz
         guard let user = UserManager.shared.currentUser else {
             print("No current user found")
             return
         }
         
         viewModel.fetchPostsForUserIds(user: user) { [weak self] in
-            // TableView verilerini güncelleme
             self?.tableView.objects = self?.viewModel.posts ?? []
         }
     }

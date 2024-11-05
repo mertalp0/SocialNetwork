@@ -50,9 +50,8 @@ final class FeedVC: BaseVC<FeedViewModel> {
     }
     
     private func setupTableView() {
-        tableView = NeonTableView<Post, FeedCell>(objects: [], heightForRows: 350)
+        tableView = FeedTableView(objects: [], heightForRows: 350, style: .grouped, delegate: self)
         
-        // Refresh Control ayarları
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
@@ -64,10 +63,12 @@ final class FeedVC: BaseVC<FeedViewModel> {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
-        // Hücre seçildiğinde bir işlem yapma
         tableView.didSelect = { object, indexPath in
             print("Selected: \(object.username) at row \(indexPath.row)")
         }
+        
+    
+        
     }
     
     @objc private func handleRefresh() {
@@ -76,7 +77,6 @@ final class FeedVC: BaseVC<FeedViewModel> {
     
     private func fetchPostsAndUpdateTableView() {
         viewModel.fetchPosts { [weak self] in
-            // `fetchPosts` tamamlandıktan sonra tabloyu güncelle
             self?.tableView.objects = self?.viewModel.posts ?? []
             self?.refreshControl.endRefreshing()
         }
@@ -102,4 +102,21 @@ extension FeedVC: CustomButtonDelegate {
         let postCreateVC = PostCreateVC(viewModel: viewModel)
         present(destinationVC: postCreateVC, slideDirection: .up)
     }
+}
+
+//MARK: - FeedCeelDelegate
+extension FeedVC: FeedCellDelegate {
+    
+    func onTapLike() {
+        print("like")
+    }
+    
+    func onTapComment() {
+        let commentViewModel = CommentViewModel()
+        let commentVC = CommentVC(viewModel: commentViewModel)
+        
+        present(destinationVC:commentVC, slideDirection: .right)
+    }
+    
+    
 }

@@ -10,6 +10,7 @@ import FirebaseAuth
 
 class LoginViewModel: BaseViewModel {
     
+    // MARK: - Properties
     var email: String = ""
     var password: String = ""
     
@@ -18,7 +19,7 @@ class LoginViewModel: BaseViewModel {
     private let validationManager = ValidationManager()
     
     // MARK: - Input Validation
-    private  func validateInputs() -> Bool {
+    private func validateInputs() -> Bool {
         let isEmailValid = validationManager.validateEmail(email)
         let isPasswordValid = validationManager.validatePassword(password)
         
@@ -39,13 +40,11 @@ class LoginViewModel: BaseViewModel {
         
         startLoading()
         
-        // 1. Auth ile kullanıcı giriş işlemi
         authService.login(email: email, password: password) { [weak self] result in
             self?.stopLoading()
             
             switch result {
             case .success(let user):
-                // 2. Firestore’dan kullanıcı verisini al ve UserManager’a kaydet
                 self?.fetchAndSetUser(userId: user.uid, completion: completion)
                 
             case .failure(let error):
@@ -55,16 +54,16 @@ class LoginViewModel: BaseViewModel {
         }
     }
     
-    // MARK: - Fetch and Set User
+    // MARK: - Fetch and Set User Data
     private func fetchAndSetUser(userId: String, completion: @escaping (Result<AppUser, Error>) -> Void) {
-        userService.getUser(id: userId) { result in
+        userService.getUser(id: userId) { [weak self] result in
             switch result {
             case .success(let appUser):
-                UserManager.shared.setUser(appUser)  // UserManager ile kullanıcıyı ayarla
+                UserManager.shared.setUser(appUser)
                 completion(.success(appUser))
                 
             case .failure(let error):
-                self.triggerAlert(title: "User Fetch Error", message: "Unable to fetch user data.")
+                self?.triggerAlert(title: "User Fetch Error", message: "Unable to fetch user data.")
                 completion(.failure(error))
             }
         }

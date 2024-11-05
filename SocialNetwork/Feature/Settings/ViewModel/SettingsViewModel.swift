@@ -7,11 +7,12 @@
 
 import Foundation
 
-class SettingsViewModel: BaseViewModel {
+final class SettingsViewModel: BaseViewModel {
     
+    // MARK: - Properties
     private let authService = AuthService.shared
 
-    // Çıkış yapma işlemi
+    // MARK: - Logout Function
     func logout(completion: @escaping (Result<Void, Error>) -> Void) {
         startLoading()
         
