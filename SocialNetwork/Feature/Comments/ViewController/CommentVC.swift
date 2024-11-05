@@ -16,11 +16,7 @@ final class CommentVC: BaseVC<CommentViewModel> {
     private var user: AppUser? {
         return UserManager.shared.currentUser
     }
-    
-    
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,6 +30,7 @@ final class CommentVC: BaseVC<CommentViewModel> {
     private func setupUI() {
         
         view.addSubview(appBar)
+        appBar.delegate = self
         appBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.left.right.equalToSuperview()
@@ -64,13 +61,17 @@ final class CommentVC: BaseVC<CommentViewModel> {
 // MARK: - SettingsAppBarDelegate
 extension CommentVC: SettingsAppBarDelegate {
     func didTapBackButton() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
 }
 
+//MARK: - CustomButtonDelegate
 extension CommentVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
         print("send comment")
+        viewModel.pushComment(text: "first commit") { success in
+            print("dgv")
+        }
     }
     
     

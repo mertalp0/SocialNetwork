@@ -18,6 +18,8 @@ protocol FeedCellDelegate: AnyObject {
 
 final class FeedCell: NeonTableViewCell<Post> {
     
+    
+    var post : Post?
     static let reuseIdentifier = "FeedCell"
     
     private let profileImageView = UIImageView()
@@ -153,35 +155,38 @@ final class FeedCell: NeonTableViewCell<Post> {
     }
     
     override func configure(with post: Post) {
-        if let url = URL(string: post.userImageUrl) {
-            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
-        }
-        
-        usernameLabel.text = post.username
-        nickNameLabel.text = "@\(post.userNickname)"
-        dateLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .none)
-        contentLabel.text = post.text
-        
-        if let imageUrl = post.imageUrl, let url = URL(string: imageUrl) {
-            postImageView.kf.setImage(with: url)
-            postImageView.isHidden = false
-        } else {
-            postImageView.isHidden = true
-        }
-        
-        likeCountLabel.text = "\(post.likers.count)"
-        commentCountLabel.text = "\(post.commenters.count)"
-    }
+          self.post = post
+          
+          if let url = URL(string: post.userImageUrl) {
+              profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+          }
+          
+          usernameLabel.text = post.username
+          nickNameLabel.text = "@\(post.userNickname)"
+          dateLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .none)
+          contentLabel.text = post.text
+          
+          if let imageUrl = post.imageUrl, let url = URL(string: imageUrl) {
+              postImageView.kf.setImage(with: url)
+              postImageView.isHidden = false
+          } else {
+              postImageView.isHidden = true
+          }
+          
+          likeCountLabel.text = "\(post.likers.count)"
+          commentCountLabel.text = "\(post.commenters.count)"
+      }
 }
 
-//MARK: - Action
+// MARK: - Action
 extension FeedCell {
     @objc func didTapLike() {
-        delegate?.onTapLike()
+        guard let post = post else { return }
+        delegate?.onTapLike(for: post)
     }
     
     @objc func didTapComment() {
-        delegate?.onTapComment()
+        guard let post = post else { return }
+        delegate?.onTapComment(for: post)
     }
-
 }

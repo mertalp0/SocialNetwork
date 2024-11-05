@@ -17,7 +17,8 @@ final class CommentService {
         let commentId = comment.id
         let commentData: [String: Any] = [
             "id": commentId,
-            "userId": comment.userId,
+            "userID": comment.userId,
+            "postId": comment.postId,
             "username": comment.username,
             "nickname": comment.nickname,
             "userImageUrl": comment.userImageUrl,
@@ -29,7 +30,16 @@ final class CommentService {
             if let error = error {
                 completion(.failure(error))
             } else {
-                completion(.success(()))
+                // Yorum ekleme işlemi başarılı ise, ilgili postu güncelle
+                self.db.collection("posts").document(comment.postId).updateData([
+                    "commenters": FieldValue.arrayUnion([commentId])
+                ]) { postError in
+                    if let postError = postError {
+                        completion(.failure(postError))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
             }
         }
     }
@@ -72,6 +82,7 @@ extension CommentService {
         guard
             let id = data["id"] as? String,
             let userId = data["userId"] as? String,
+            let postId = data["postId"] as? String,
             let username = data["username"] as? String,
             let nickname = data["nickname"] as? String,
             let userImageUrl = data["userImageUrl"] as? String,
@@ -84,6 +95,7 @@ extension CommentService {
         return Comment(
             id: id,
             userId: userId,
+            postId: postId,
             username: username,
             nickname: nickname,
             userImageUrl: userImageUrl,

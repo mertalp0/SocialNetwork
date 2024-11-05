@@ -7,31 +7,49 @@ import Foundation
 
 final class CommentViewModel: BaseViewModel {
     
-    private let commentService = CommentService()
     
-    func fetchComments(completion: @escaping ([Comment]) -> Void) {
-//        commentService.getComments(for: postID) { result in
-//            switch result {
-//            case .success(let comments):
-//                completion(comments)
-//            case .failure(let error):
-//                print("Error fetching comments: \(error.localizedDescription)")
-//                completion([])
-//            }
-//        }
+    var post : Post?
+    var comments : [Comment] = []
+    
+    init(post: Post? = nil) {
+        self.post = post
     }
     
-    func sendComment(text: String, completion: @escaping (Bool) -> Void) {
-//        let comment = Comment(id: UUID().uuidString, userId: currentUser.id, username: currentUser.username, nickname: currentUser.nickname, userImageUrl: currentUser.profileImageUrl, createdAt: Date(), commentText: text)
-//        
-//        commentService.pushComment(comment: comment) { result in
-//            switch result {
-//            case .success:
-//                completion(true)
-//            case .failure(let error):
-//                print("Error sending comment: \(error.localizedDescription)")
-//                completion(false)
-//            }
-//        }
+    private var user = UserManager.shared.currentUser
+    
+    private let commentService = CommentService()
+    
+    func fetchComments(commentIds: [String], completion: @escaping (Bool) -> Void) {
+        startLoading()
+        commentService.getComments(byIds: commentIds) { [weak self] result in
+            self?.startLoading()
+            switch result {
+            case .success(let fetchedComments):
+                self?.comments = fetchedComments
+                completion(true)
+            case .failure(let error):
+                print("Error fetching comments: \(error.localizedDescription)")
+                self?.triggerAlert(title: "Error", message: error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+    
+    func pushComment(text: String, completion: @escaping (Bool) -> Void) {
+        startLoading()
+        let comment = Comment(id: UUID().uuidString, userId: user!.id, postId: post!.id, username: user!.username, nickname: user!.nickname, userImageUrl: user!.profileImageUrl, createdAt: Date(), commentText: text)
+        
+        commentService.pushComment(comment: comment) { result in
+            self.stopLoading()
+            switch result {
+            case .success:
+                self.triggerAlert(title: "Success", message: "post shared successfully")
+                completion(true)
+            case .failure(let error):
+                print("Error sending comment: \(error.localizedDescription)")
+                self.triggerAlert(title: "Error", message: error.localizedDescription)
+                completion(false)
+            }
+        }
     }
 }

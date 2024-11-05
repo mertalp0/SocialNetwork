@@ -104,19 +104,18 @@ extension FeedVC: CustomButtonDelegate {
     }
 }
 
-//MARK: - FeedCeelDelegate
+// MARK: - FeedCellDelegate
 extension FeedVC: FeedCellDelegate {
     
-    func onTapLike() {
-        print("like")
+    func onTapLike(for post: Post) {
+        print("Like tapped for post: \(post)")
     }
     
-    func onTapComment() {
-        let commentViewModel = CommentViewModel()
-        let commentVC = CommentVC(viewModel: commentViewModel)
+    func onTapComment(for post: Post) {
+        print("Comment tapped for post: \(post)")
         
-        present(destinationVC:commentVC, slideDirection: .right)
+        let commentViewModel = CommentViewModel(post: post)
+        let commentVC = CommentVC(viewModel: commentViewModel)
+        present(destinationVC: commentVC, slideDirection: .right)
     }
-    
-    
 }

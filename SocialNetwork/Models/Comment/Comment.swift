@@ -10,6 +10,7 @@ import Foundation
 struct Comment: Codable {
     var id: String
     var userId: String
+    var postId: String
     var username: String
     var nickname: String
     var userImageUrl: String
@@ -19,6 +20,7 @@ struct Comment: Codable {
     init(
         id: String,
         userId: String,
+        postId: String,
         username: String,
         nickname: String,
         userImageUrl: String,
@@ -27,6 +29,7 @@ struct Comment: Codable {
     ) {
         self.id = id
         self.userId = userId
+        self.postId = postId
         self.username = username
         self.nickname = nickname
         self.userImageUrl = userImageUrl
