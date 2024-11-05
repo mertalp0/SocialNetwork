@@ -7,23 +7,31 @@ import Foundation
 
 final class CommentViewModel: BaseViewModel {
     
+    var post: Post?
+    var comments: [Comment] = []
     
-    var post : Post?
-    var comments : [Comment] = []
-    
-    init(post: Post? = nil) {
-        self.post = post
+    private var user: AppUser? {
+        return UserManager.shared.currentUser
     }
-    
-    private var user = UserManager.shared.currentUser
     
     private let commentService = CommentService()
     
+    init(post: Post? = nil) {
+        super.init()
+        self.post = post
+        if let commentIds = post?.commenters {
+            self.fetchComments(commentIds: commentIds) { _ in }
+        }
+    }
+    
     func fetchComments(commentIds: [String], completion: @escaping (Bool) -> Void) {
         startLoading()
+        
         commentService.getComments(byIds: commentIds) { [weak self] result in
-            self?.startLoading()
+           
+            self?.stopLoading()
             switch result {
+                
             case .success(let fetchedComments):
                 self?.comments = fetchedComments
                 completion(true)
@@ -36,18 +44,36 @@ final class CommentViewModel: BaseViewModel {
     }
     
     func pushComment(text: String, completion: @escaping (Bool) -> Void) {
-        startLoading()
-        let comment = Comment(id: UUID().uuidString, userId: user!.id, postId: post!.id, username: user!.username, nickname: user!.nickname, userImageUrl: user!.profileImageUrl, createdAt: Date(), commentText: text)
+        guard let user = user, let post = post else {
+            triggerAlert(title: "Error", message: "User or Post not found")
+            completion(false)
+            return
+        }
         
-        commentService.pushComment(comment: comment) { result in
-            self.stopLoading()
+        startLoading()
+        
+        let comment = Comment(
+            id: UUID().uuidString,
+            userId: user.id,
+            postId: post.id,
+            username: user.username,
+            nickname: user.nickname,
+            userImageUrl: user.profileImageUrl,
+            createdAt: Date(),
+            commentText: text
+        )
+        
+        commentService.pushComment(comment: comment) { [weak self] result in
+            self?.stopLoading()
+            
             switch result {
             case .success:
-                self.triggerAlert(title: "Success", message: "post shared successfully")
+                self?.triggerAlert(title: "Success", message: "Comment posted successfully")
+                self?.comments.append(comment)
                 completion(true)
             case .failure(let error):
                 print("Error sending comment: \(error.localizedDescription)")
-                self.triggerAlert(title: "Error", message: error.localizedDescription)
+                self?.triggerAlert(title: "Error", message: error.localizedDescription)
                 completion(false)
             }
         }

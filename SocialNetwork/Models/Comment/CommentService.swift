@@ -17,7 +17,7 @@ final class CommentService {
         let commentId = comment.id
         let commentData: [String: Any] = [
             "id": commentId,
-            "userID": comment.userId,
+            "userId": comment.userId,
             "postId": comment.postId,
             "username": comment.username,
             "nickname": comment.nickname,
@@ -30,7 +30,7 @@ final class CommentService {
             if let error = error {
                 completion(.failure(error))
             } else {
-                // Yorum ekleme işlemi başarılı ise, ilgili postu güncelle
+               
                 self.db.collection("posts").document(comment.postId).updateData([
                     "commenters": FieldValue.arrayUnion([commentId])
                 ]) { postError in
@@ -56,6 +56,7 @@ final class CommentService {
         
         for commentId in commentIds {
             group.enter()
+            
             db.collection(commentsCollection).document(commentId).getDocument { document, error in
                 defer { group.leave() }
                 
@@ -79,6 +80,7 @@ final class CommentService {
 extension CommentService {
     // MARK: - Map Firestore Data to Comment
     private func mapComment(data: [String: Any]) -> Comment? {
+        
         guard
             let id = data["id"] as? String,
             let userId = data["userId"] as? String,

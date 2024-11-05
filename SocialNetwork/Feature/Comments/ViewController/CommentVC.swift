@@ -12,6 +12,8 @@ final class CommentVC: BaseVC<CommentViewModel> {
     
     private let appBar = SettingsAppBar(title: "Comment")
     private var sendButton: CustomButton!
+    private var tableView: UITableView!
+    private var noCommentsLabel: UILabel!
     
     private var user: AppUser? {
         return UserManager.shared.currentUser
@@ -24,7 +26,8 @@ final class CommentVC: BaseVC<CommentViewModel> {
         setupTextField()
         setupTableView()
         setupSendButton()
-    
+        
+        fetchComments()
     }
     
     private func setupUI() {
@@ -51,12 +54,68 @@ final class CommentVC: BaseVC<CommentViewModel> {
         }
     }
     
-    private func setupTextField(){}
-    
-    private func setupTableView() {}
+    private func setupTextField() {
 
+    }
+    
+    private func setupTableView() {
+        tableView = UITableView()
+        tableView.register(CommentCell.self, forCellReuseIdentifier: "CommentCell")
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(appBar.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        noCommentsLabel = UILabel()
+        noCommentsLabel.text = "Henüz yorum yok."
+        noCommentsLabel.textAlignment = .center
+        noCommentsLabel.textColor = .gray
+        noCommentsLabel.font = .systemFont(ofSize: 16)
+        view.addSubview(noCommentsLabel)
+        
+        noCommentsLabel.snp.makeConstraints { make in
+            make.center.equalTo(tableView)
+        }
+        
+        updateNoCommentsLabelVisibility()
+    }
+    
+    private func fetchComments() {
+        guard let commentIds = viewModel.post?.commenters else { return }
+        viewModel.fetchComments(commentIds: commentIds) { [weak self] success in
+            if success {
+                self?.tableView.reloadData()
+                self?.updateNoCommentsLabelVisibility()
+            } else {
+                print("Failed to fetch comments")
+            }
+        }
+    }
+    
+    private func updateNoCommentsLabelVisibility() {
+        noCommentsLabel.isHidden = !viewModel.comments.isEmpty
+    }
 }
 
+// MARK: - UITableViewDataSource
+extension CommentVC: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.comments.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+        let comment = viewModel.comments[indexPath.row]
+        cell.configure(with: comment)
+        return cell
+    }
+}
 
 // MARK: - SettingsAppBarDelegate
 extension CommentVC: SettingsAppBarDelegate {
@@ -68,11 +127,12 @@ extension CommentVC: SettingsAppBarDelegate {
 //MARK: - CustomButtonDelegate
 extension CommentVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
-        print("send comment")
-        viewModel.pushComment(text: "first commit") { success in
-            print("dgv")
+        viewModel.pushComment(text: "first comment") { [weak self] success in
+            if success {
+                self?.tableView.reloadData()
+            } else {
+                print("Failed to send comment")
+            }
         }
     }
-    
-    
 }

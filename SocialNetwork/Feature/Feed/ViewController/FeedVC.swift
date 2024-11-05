@@ -23,6 +23,9 @@ final class FeedVC: BaseVC<FeedViewModel> {
         
         fetchPostsAndUpdateTableView()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        fetchPostsAndUpdateTableView()
+    }
     
     private func setupAppBar() {
         appBar = FeedAppBar()
