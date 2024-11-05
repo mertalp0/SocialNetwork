@@ -49,7 +49,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         view.addSubview(signUpTitle)
         
         signUpTitle.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(dynamicHeight(50))
             make.leading.equalToSuperview().offset(20)
         }
     }
@@ -70,7 +70,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         profileImageContainerView.snp.makeConstraints { make in
             make.top.equalTo(signUpTitle.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(100)
+            make.width.height.equalTo(dynamicHeight(100))
         }
         
         profileImageView.snp.makeConstraints { make in
@@ -92,19 +92,19 @@ class SignUpVC: BaseVC<SignupViewModel> {
         passwordTextField.textContentType = .none
         
         usernameTextField.snp.makeConstraints { make in
-            make.top.equalTo(profileImageContainerView.snp.bottom).offset(20)
+            make.top.equalTo(profileImageContainerView.snp.bottom).offset(dynamicHeight(20))
         }
         nicknameTextField.snp.makeConstraints { make in
-            make.top.equalTo(usernameTextField.snp.bottom).offset(10)
+            make.top.equalTo(usernameTextField.snp.bottom).offset(dynamicHeight(10))
         }
         mailTextField.snp.makeConstraints { make in
-            make.top.equalTo(nicknameTextField.snp.bottom).offset(10)
+            make.top.equalTo(nicknameTextField.snp.bottom).offset(dynamicHeight(10))
         }
         passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(mailTextField.snp.bottom).offset(10)
+            make.top.equalTo(mailTextField.snp.bottom).offset(dynamicHeight(10))
         }
         aboutMeTextField.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(10)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(dynamicHeight(10))
         }
     }
     
@@ -114,7 +114,7 @@ class SignUpVC: BaseVC<SignupViewModel> {
         
         textField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+            make.height.equalTo(dynamicHeight(40))
         }
         
         return textField

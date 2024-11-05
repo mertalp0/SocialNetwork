@@ -106,7 +106,7 @@ class LoginVC: BaseVC<LoginViewModel> {
         signUpButton = UILabel()
         signUpButton.text = l10n.signUpText()
         signUpButton.textColor = .primaryColor
-        signUpButton.font = UIFont.dynamicFont(size: 14)
+        signUpButton.font = font(for: .body)
         signUpButton.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped))
         signUpButton.addGestureRecognizer(tapGesture)
