@@ -107,9 +107,9 @@ extension PostCreateVC: CustomAppBarDelegate {
 extension PostCreateVC: CustomButtonDelegate {
     func customButtonDidTap(_ button: CustomButton) {
         print("on tap share button")
-        textField.text = ""
         viewModel.text = self.textField.text ?? ""
         viewModel.image = UIImage(named: "Mert")
         viewModel.createPost()
+        textField.text = ""
     }
 }

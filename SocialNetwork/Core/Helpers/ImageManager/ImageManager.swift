@@ -17,6 +17,8 @@ final class ImageManager {
     enum AppIcons: String {
         case profilePlaceholder = "person.crop.circle.fill.badge.plus"
         case backButtonIcon = "chevron.backward"
+        case heartIcon = "heart"
+        case commentIcon = "message"
     }
     
     func getImage(named name: AppIcons) -> UIImage? {

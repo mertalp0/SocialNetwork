@@ -10,7 +10,6 @@ import SnapKit
 import Kingfisher
 import NeonSDK
 
-// FeedCell.swift
 protocol FeedCellDelegate: AnyObject {
     func onTapLike(for post: Post)
     func onTapComment(for post: Post)
@@ -18,8 +17,7 @@ protocol FeedCellDelegate: AnyObject {
 
 final class FeedCell: NeonTableViewCell<Post> {
     
-    
-    var post : Post?
+    var post: Post?
     static let reuseIdentifier = "FeedCell"
     
     private let profileImageView = UIImageView()
@@ -32,7 +30,6 @@ final class FeedCell: NeonTableViewCell<Post> {
     private let commentButton = UIButton()
     private let likeCountLabel = UILabel()
     private let commentCountLabel = UILabel()
-    private let separatorView = UIView()
     
     weak var delegate: FeedCellDelegate?
     
@@ -51,51 +48,50 @@ final class FeedCell: NeonTableViewCell<Post> {
         profileImageView.contentMode = .scaleAspectFill
         contentView.addSubview(profileImageView)
         
-        usernameLabel.font = .boldSystemFont(ofSize: 16)
+        usernameLabel.font = .boldSystemFont(ofSize: 14)
         contentView.addSubview(usernameLabel)
         
-        nickNameLabel.font = .systemFont(ofSize: 14)
+        nickNameLabel.font = UIFont.systemFont(ofSize: 12)
         nickNameLabel.textColor = .gray
         contentView.addSubview(nickNameLabel)
         
-        dateLabel.font = .systemFont(ofSize: 12)
+        dateLabel.font = UIFont.systemFont(ofSize: 10)
         dateLabel.textColor = .lightGray
         contentView.addSubview(dateLabel)
         
-        contentLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        contentLabel.font = UIFont.systemFont(ofSize: 14)
         contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
         
-        postImageView.layer.cornerRadius = 10
+        postImageView.layer.cornerRadius = .cornerRadius
         postImageView.clipsToBounds = true
         postImageView.contentMode = .scaleAspectFill
         contentView.addSubview(postImageView)
         
-        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        likeButton.setImage(ImageManager.shared.getImage(named: .heartIcon), for: .normal)
         likeButton.tintColor = .black
-        likeButton.addTarget(self, action: #selector (didTapLike), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
         contentView.addSubview(likeButton)
         
-        likeCountLabel.font = .systemFont(ofSize: 14)
+        likeCountLabel.font = .systemFont(ofSize: 12)
+        likeCountLabel.textColor = .black
         contentView.addSubview(likeCountLabel)
         
-        commentButton.setImage(UIImage(systemName: "message"), for: .normal)
+        commentButton.setImage(ImageManager.shared.getImage(named: .commentIcon), for: .normal)
         commentButton.tintColor = .black
         commentButton.addTarget(self, action: #selector(didTapComment), for: .touchUpInside)
         contentView.addSubview(commentButton)
         
-        commentCountLabel.font = .systemFont(ofSize: 14)
+        commentCountLabel.font = UIFont.systemFont(ofSize: 12)
+        commentCountLabel.textColor = .black
         contentView.addSubview(commentCountLabel)
-        
-        separatorView.backgroundColor = .lightGray.withAlphaComponent(0.5)
-        contentView.addSubview(separatorView)
         
         setupConstraints()
     }
     
     private func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(16)
+            make.top.left.equalToSuperview().offset(12)
             make.width.height.equalTo(40)
         }
         
@@ -110,25 +106,26 @@ final class FeedCell: NeonTableViewCell<Post> {
         }
         
         dateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.right.equalToSuperview().inset(16)
-        }
-        
-        postImageView.snp.makeConstraints { make in
-            make.top.equalTo(nickNameLabel.snp.bottom).offset(12)
-            make.left.right.equalToSuperview().inset(16)
-            make.height.equalTo(200)
+            make.top.equalToSuperview().offset(12)
+            make.right.equalToSuperview().inset(12)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(postImageView.snp.bottom).offset(8)
-            make.left.right.equalToSuperview().inset(16)
+            make.top.equalTo(profileImageView.snp.bottom).offset(12)
+            make.left.equalToSuperview().offset(12)
+            make.right.equalTo(postImageView.snp.left).offset(-8)
+        }
+        
+        postImageView.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView.snp.bottom).offset(12)
+            make.right.equalToSuperview().inset(12)
+            make.width.height.equalTo(120)
         }
         
         likeButton.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(16)
-            make.width.height.equalTo(24)
+            make.top.equalTo(postImageView.snp.bottom).offset(5)
+            make.left.equalToSuperview().offset(12)
+            make.width.height.equalTo(20)
         }
         
         likeCountLabel.snp.makeConstraints { make in
@@ -139,46 +136,41 @@ final class FeedCell: NeonTableViewCell<Post> {
         commentButton.snp.makeConstraints { make in
             make.centerY.equalTo(likeButton)
             make.left.equalTo(likeCountLabel.snp.right).offset(16)
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(20)
         }
         
         commentCountLabel.snp.makeConstraints { make in
             make.centerY.equalTo(commentButton)
             make.left.equalTo(commentButton.snp.right).offset(4)
-        }
-        
-        separatorView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview()
-            make.height.equalTo(1)
+            make.bottom.equalToSuperview().inset(12)
         }
     }
     
     override func configure(with post: Post) {
-          self.post = post
-          
-          if let url = URL(string: post.userImageUrl) {
-              profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
-          }
-          
-          usernameLabel.text = post.username
-          nickNameLabel.text = "@\(post.userNickname)"
-          dateLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .none)
-          contentLabel.text = post.text
-          
-          if let imageUrl = post.imageUrl, let url = URL(string: imageUrl) {
-              postImageView.kf.setImage(with: url)
-              postImageView.isHidden = false
-          } else {
-              postImageView.isHidden = true
-          }
-          
-          likeCountLabel.text = "\(post.likers.count)"
-          commentCountLabel.text = "\(post.commenters.count)"
-      }
+        self.post = post
+        
+        if let url = URL(string: post.userImageUrl) {
+            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        }
+        
+        usernameLabel.text = post.username
+        nickNameLabel.text = "@\(post.userNickname)"
+        dateLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .none)
+        contentLabel.text = post.text
+        
+        if let imageUrl = post.imageUrl, let url = URL(string: imageUrl) {
+            postImageView.kf.setImage(with: url)
+            postImageView.isHidden = false
+        } else {
+            postImageView.isHidden = true
+        }
+        
+        likeCountLabel.text = "\(post.likers.count)"
+        commentCountLabel.text = "\(post.commenters.count)"
+    }
 }
 
-// MARK: - Action
+// MARK: - Actions
 extension FeedCell {
     @objc func didTapLike() {
         guard let post = post else { return }

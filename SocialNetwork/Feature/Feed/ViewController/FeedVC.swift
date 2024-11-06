@@ -53,7 +53,7 @@ final class FeedVC: BaseVC<FeedViewModel> {
     }
     
     private func setupTableView() {
-        tableView = FeedTableView(objects: [], heightForRows: 350, style: .grouped, delegate: self)
+        tableView = FeedTableView(objects: [], heightForRows: 230, style: .grouped, delegate: self)
         
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
@@ -69,9 +69,6 @@ final class FeedVC: BaseVC<FeedViewModel> {
         tableView.didSelect = { object, indexPath in
             print("Selected: \(object.username) at row \(indexPath.row)")
         }
-        
-    
-        
     }
     
     @objc private func handleRefresh() {
